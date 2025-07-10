@@ -1,6 +1,6 @@
 import { AppDataSource } from '../../data-source';
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
-
+import { hash } from 'bcrypt' 
 export class User1750333720175 implements Seeder {
     track = false;
 
@@ -13,7 +13,7 @@ export class User1750333720175 implements Seeder {
         await UserRepository.insert([
             {
                 email: 'anthonymathieu21@live.fr',
-                password: 'password',
+                password: await hash('password', 10),
             }])
 
     }

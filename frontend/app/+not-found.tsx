@@ -5,7 +5,7 @@ export default function NotFoundScreen() {
     <>
       <View>
         <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 20 }}>
-          This screen doesn't exist.
+          404 - Page Not Found
         </Text>
       </View>
     </>
