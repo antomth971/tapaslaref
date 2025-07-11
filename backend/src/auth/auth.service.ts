@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { compare } from 'bcrypt';
+import { compare,hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../database/entity/user.entity';
 
@@ -31,6 +31,19 @@ export class AuthService {
 
     async checkIsLogin(user: User): Promise<{ isLoggedIn: boolean }> {
         return { isLoggedIn: !!user };
+    }
+
+    async register(email: string, password: string): Promise<boolean> {
+        const existingUser = await this.userService.findByEmail(email);
+        if (existingUser) {
+            return false;
+        }
+        const hashedPassword = await hash(password, 10);
+        const newUser = new User();
+        newUser.email = email;
+        newUser.password = hashedPassword;
+        const savedUser = await this.userService.create(newUser);
+        return !!savedUser;
     }
 
 }

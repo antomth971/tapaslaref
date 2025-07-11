@@ -88,17 +88,32 @@ const commonStyles = StyleSheet.create({
         marginTop: 20,
         paddingHorizontal: 10,
     } as ViewStyle,
-      title: {
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 10,
-    color: '#555',
-  },
+    title: {
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    description: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 10,
+        color: '#555',
+    },
+    validText: {
+        color: 'green',
+        fontSize: 14,
+        marginBottom: 4,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 4,
+    },
+    justifyContent: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export { commonStyles };

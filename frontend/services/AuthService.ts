@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getConfig from "@/constants/config";
+import ReturnWithBoolean from '@/type/request/return_with_boolean';
 
 const API_URL=process.env.EXPO_PUBLIC_API_URL as string
 
@@ -14,7 +15,7 @@ const API_URL=process.env.EXPO_PUBLIC_API_URL as string
         }
     }
 
-    const registerUser = async (email: string, password: string) => {
+    const registerUser = async (email: string, password: string): Promise<ReturnWithBoolean> => {
         try {
             const config = await getConfig();
             const response = await axios.post(`${API_URL}/auth/register`, { email, password }, config);
