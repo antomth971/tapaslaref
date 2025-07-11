@@ -15,6 +15,7 @@ export class User1750333720175 implements Seeder {
                 email: 'anthonymathieu21@live.fr',
                 password: await hash('password', 10),
             }])
+        console.log('User seeded successfully');
 
     }
 }

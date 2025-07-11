@@ -39,9 +39,15 @@ const Navbar = () => {
                                 Tapaslaref
                             </Link>
                             :
+                            <>
                             <Link href="/" style={[styles.brandLink]}>
                                 Tapaslaref
-                            </Link>}
+                            </Link>
+                            <Link href="/video" style={[styles.brandLink]}>
+                                video
+                            </Link>
+                            </>
+                            }
                         <View style={styles.linksRowRight}>
                             <LanguageSwitcher />
                             {!isAuthenticated && !isMobile &&
@@ -144,6 +150,7 @@ const styles = StyleSheet.create({
     },
     brandLink: {
         fontSize: 18,
+        padding: 8,
         fontWeight: "bold"
     },
     linksRowRight: {

@@ -18,7 +18,7 @@ const defaultContextValue: AUTH_CONTEXT_TYPE = {
     }
 };
 
-const publicRoutes = ["/","/+not-found", "/login", "/register"];
+const publicRoutes = ["/","/+not-found", "/login", "/register", "/video"];
 const AUTH_CONTEXT = createContext(defaultContextValue);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     setIsAuthenticated(false);
                     await AsyncStorage.removeItem("token");
                     const isPublic = publicRoutes.some((route) => {
-                        return pathName === route;
+                        return pathName === route || pathName.startsWith("/video/");
                       })
                     if (!isPublic) {
                         router.push("/+not-found");
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setIsAuthenticated(false);
                 await AsyncStorage.removeItem("token");
                 const isPublic = publicRoutes.some((route) => {
-                    return pathName === route || pathName.startsWith("/user/checkMail/");
+                    return pathName === route || pathName.startsWith("/video/");
                 })                
                 if (!isPublic) {
                     router.push("/+not-found");
