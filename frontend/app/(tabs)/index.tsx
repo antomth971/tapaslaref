@@ -2,29 +2,31 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { commonStyles } from '@/constants/style';
+import { useLanguage } from '@/hooks/providers/LangageProvider';
 export default function HomeScreen() {
+  const { i18n } = useLanguage();
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.title}>
-        Welcome to Tapaslaref!
+        {i18n.t("welcome")}
       </Text>
       <Text style={commonStyles.description}>
-        Tapaslaref is your platform to search, share, and download viral content, such as memes, videos, and photos.
+        {i18n.t("description")}
       </Text>
 
       <Text style={commonStyles.subTitle}>
-        What you can do:
+        {i18n.t("what_you_can_do")}
       </Text>
 
       <View style={commonStyles.actionsContainer}>
         <Text style={commonStyles.actionText}>
-          - Create an account or log in to upload and download content.
+          - {i18n.t("create_account")}
         </Text>
         <Text style={commonStyles.actionText}>
-          - Search for popular videos and photos using our search feature.
+          - {i18n.t("search_videos")}
         </Text>
         <Text style={commonStyles.actionText}>
-          - If logged in, you can also download photos and videos.
+          - {i18n.t("download_content")}
         </Text>
       </View>
 
@@ -32,20 +34,20 @@ export default function HomeScreen() {
         <TouchableOpacity style={commonStyles.button}>
 
           <Link href="/register">
-            <Text style={commonStyles.buttonText}>Sign Up</Text>
+            <Text style={commonStyles.buttonText}>{i18n.t("register")}</Text>
           </Link>
         </TouchableOpacity>
         <TouchableOpacity style={commonStyles.button}>
 
           <Link href="/login">
-            <Text style={commonStyles.buttonText}>Log In</Text>
+            <Text style={commonStyles.buttonText}>{i18n.t("login")}</Text>
           </Link>
         </TouchableOpacity>
 
       </View>
 
       <Text style={commonStyles.footer}>
-        Made for sharing memes and more!
+        {i18n.t("footer")}
       </Text>
     </View>
   );

@@ -4,8 +4,9 @@ import { Link } from 'expo-router';
 import { commonStyles } from '@/constants/style';
 import AboutPassword from '@/components/aboutPassword';
 import { registerUser } from '@/services/AuthService';
-
+import { useLanguage } from '@/hooks/providers/LangageProvider';
 export default function Register() {
+    const { i18n } = useLanguage();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -40,15 +41,15 @@ export default function Register() {
 
     return (
         <View style={commonStyles.container}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Register</Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>{i18n.t("register")}</Text>
             {isRegistered && (
-                <Text style={{ color: 'green', textAlign: 'center', marginBottom: 20 }}>Registration successful! You can now log in.</Text>
+                <Text style={{ color: 'green', textAlign: 'center', marginBottom: 20 }}>{i18n.t("registration_successful")}</Text>
             )}
             <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.label}>Email</Text>
+                <Text style={commonStyles.label}>{i18n.t("email")}</Text>
                 <TextInput
                     style={commonStyles.input}
-                    placeholder="Email"
+                    placeholder={i18n.t("email")}
                     placeholderTextColor="#B0B0B0"
                     value={email}
                     onChangeText={setEmail}
@@ -58,10 +59,10 @@ export default function Register() {
             </View>
 
             <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.label}>Password</Text>
+                <Text style={commonStyles.label}>{i18n.t("password")}</Text>
                 <TextInput
                     style={commonStyles.input}
-                    placeholder="Password"
+                    placeholder={i18n.t("password")}
                     placeholderTextColor="#B0B0B0"
                     value={password}
                     onChangeText={setPassword}
@@ -71,10 +72,10 @@ export default function Register() {
             </View>
 
             <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.label}>Confirm Password</Text>
+                <Text style={commonStyles.label}>{i18n.t("confirm_password")}</Text>
                 <TextInput
                     style={commonStyles.input}
-                    placeholder="Confirm Password"
+                    placeholder={i18n.t("confirm_password")}
                     placeholderTextColor="#B0B0B0"
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
@@ -87,11 +88,11 @@ export default function Register() {
                 <AboutPassword {...checkPassword} />
             </View>
             <TouchableOpacity style={commonStyles.button} onPress={handleRegister}>
-                <Text style={commonStyles.buttonText}>Register</Text>
+                <Text style={commonStyles.buttonText}>{i18n.t("register")}</Text>
             </TouchableOpacity>
 
             <Link href="/login">
-                <Text style={commonStyles.linkText}>Already have an account? Login</Text>
+                <Text style={commonStyles.linkText}>{i18n.t("already_have_account")}</Text>
             </Link>
         </View>
     );
