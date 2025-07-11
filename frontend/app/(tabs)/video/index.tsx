@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import { useLanguage } from '@/hooks/providers/LangageProvider';
 export default function VideoScreen() {
+    const { i18n } = useLanguage();
+
     return (
         <View style={styles.container}>
-            <Text>Welcome to Expo!</Text>
+            <Text>{i18n.t("welcome")}</Text>
         </View>
     );
 }

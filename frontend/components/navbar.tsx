@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, useColorScheme, StatusBar, SafeAreaView, StyleSheet, Platform, useWindowDimensions } from "react-native";
-import { Link, usePathname, router } from "expo-router";
+import { Link, router } from "expo-router";
 import { useAuth } from "@/hooks/providers/AuthProvider";
+import LanguageSwitcher from "./lang";
+import { useLanguage } from "@/hooks/providers/LangageProvider";
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -10,7 +12,7 @@ const Navbar = () => {
     const theme = useColorScheme() || "light";
     const { isAuthenticated, logout } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const pathName = usePathname();
+    const { i18n } = useLanguage();
 
 
     const handleLogout = async () => {
@@ -41,15 +43,16 @@ const Navbar = () => {
                                 Tapaslaref
                             </Link>}
                         <View style={styles.linksRowRight}>
+                            <LanguageSwitcher />
                             {!isAuthenticated && !isMobile &&
                                 (
                                     <View className="flex items-center justify-center flex-row ">
                                         <View style={styles.auth}>
                                             <TouchableOpacity>
-                                                <Link href={"/login"}>login</Link>
+                                                <Link href={"/login"}>{i18n.t("login")}</Link>
                                             </TouchableOpacity>
                                             <TouchableOpacity>
-                                                <Link href={"/register"}>Register</Link>
+                                                <Link href={"/register"}>{i18n.t("register")}</Link>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -62,17 +65,17 @@ const Navbar = () => {
                                             onPress={() => setIsDropdownOpen(!isDropdownOpen)}
                                             style={styles.dropdownButton}>
                                             <View style={styles.imgUser}>
-                                                <Text>User</Text>
+                                                <Text>☰</Text>
                                             </View>
                                         </TouchableOpacity>
 
                                         {isDropdownOpen && (
                                             <View style={styles.dropdownMenu}>
                                                 <TouchableOpacity style={styles.dropdownMenuItem}>
-                                                    <Link href={"/video"} style={styles.dropdownMenuItemText}>home</Link>
+                                                    <Link href={"/video"} style={styles.dropdownMenuItemText}>{i18n.t("home")}</Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={handleLogout} style={styles.dropdownMenuItem}>
-                                                    <Text style={styles.dropdownMenuItemText}>logout</Text>
+                                                    <Text style={styles.dropdownMenuItemText}>{i18n.t("logout")}</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         )}
@@ -97,23 +100,23 @@ const Navbar = () => {
                                 <>
                                     <TouchableOpacity>
                                         <Link href={"/video"} style={[styles.mobileMenuText]}>
-                                            Home
+                                            {i18n.t("home")}
                                         </Link>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={handleLogout}>
-                                        <Text style={styles.mobileMenuText}>logout</Text>
+                                        <Text style={styles.mobileMenuText}>{i18n.t("logout")}</Text>
                                     </TouchableOpacity>
                                 </>
                                 :
                                 <>
                                     <TouchableOpacity>
                                         <Link href={"/login"} style={[styles.mobileMenuText]}>
-                                            login
+                                            {i18n.t("login")}
                                         </Link>
                                     </TouchableOpacity>
                                     <TouchableOpacity>
                                         <Link href={"/register"} style={[styles.mobileMenuText]}>
-                                            Register
+                                            {i18n.t("register")}
                                         </Link>
                                     </TouchableOpacity>
                                 </>

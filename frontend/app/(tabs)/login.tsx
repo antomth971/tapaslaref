@@ -4,8 +4,10 @@ import { Link } from 'expo-router';
 import { commonStyles } from '@/constants/style';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/hooks/providers/AuthProvider';
+import { useLanguage } from '@/hooks/providers/LangageProvider';
 
 export default function Login() {
+    const { i18n } = useLanguage();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { login } = useAuth();
@@ -29,12 +31,12 @@ export default function Login() {
 
     return (
         <View style={commonStyles.container}>
-            <Text style={commonStyles.header}>Login</Text>
+            <Text style={commonStyles.header}>{i18n.t("login")}</Text>
             <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.label}>Email</Text>
+                <Text style={commonStyles.label}>{i18n.t("email")}</Text>
                 <TextInput
                     style={commonStyles.input}
-                    placeholder="Email"
+                    placeholder={i18n.t("email")}
                     placeholderTextColor="#B0B0B0"
                     value={email}
                     onChangeText={setEmail}
@@ -43,10 +45,10 @@ export default function Login() {
                 />
             </View>
             <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.label}>Password</Text>
+                <Text style={commonStyles.label}>{i18n.t("password")}</Text>
                 <TextInput
                     style={commonStyles.input}
-                    placeholder="Password"
+                    placeholder={i18n.t("password")}
                     placeholderTextColor="#B0B0B0"
                     value={password}
                     onChangeText={setPassword}
@@ -54,13 +56,13 @@ export default function Login() {
                     autoCapitalize="none"
                 />
             </View>
-            {error && <View style={commonStyles.inputContainer}><Text style={commonStyles.errorText}>Login failed. Please try again.</Text></View>}
+            {error && <View style={commonStyles.inputContainer}><Text style={commonStyles.errorText}>{i18n.t("login_failed")}</Text></View>}
 
             <TouchableOpacity style={commonStyles.button} onPress={handleLogin}>
-                <Text style={commonStyles.buttonText}>Login</Text>
+                <Text style={commonStyles.buttonText}>{i18n.t("login")}</Text>
             </TouchableOpacity>
             <Link href="/register">
-                <Text style={commonStyles.linkText}>Don't have an account? Register</Text>
+                <Text style={commonStyles.linkText}>{i18n.t("already_have_account")}</Text>
             </Link>
         </View>
     );
