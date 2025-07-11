@@ -15,7 +15,6 @@ const options: DataSourceOptions & SeederOptions = {
   logging: false,
   entities: [User, Video],
 
-  // chemins POSIX, pas de back-slash
   seeds: ['src/database/seed/**/*{.ts,.js}'],
 };
 
