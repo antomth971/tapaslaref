@@ -21,22 +21,26 @@ export class AuthController {
             return { message: 'Invalid credentials' };
         }
     }
-    /**
-     * Endpoint to get the profile of the authenticated user.
-     * @param req - The request object containing user information.
-     * @returns The username of the authenticated user.
-     * just a test to see if the user is authenticated
-     */
-    @UseGuards(AuthGuard)
-    @Get('profile')
-    getProfile(@Request() req) {
-        console.log('req.user', req.user);
-        return req.user;
-    }
 
+    /**
+     * Endpoint to handle user registration.
+     * @param signUpDto - The data transfer object containing user registration details.
+     * @returns An object indicating whether the registration was successful or not.
+     */
     @UseGuards(AuthGuard)
     @Post('checkIsLogin')
     async checkIsLogin(@Request() req) {
         return this.authService.checkIsLogin(req.user);
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Post('register')
+    async signUp(@Body() signUpDto: Record<string, any>) {
+        const isRegistered = await this.authService.register(signUpDto.email, signUpDto.password);
+        if (isRegistered) {
+            return { message: true };
+        } else {
+            return { message: false };
+        }
     }
 }

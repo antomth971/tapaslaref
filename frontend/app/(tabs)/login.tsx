@@ -9,11 +9,20 @@ export default function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { login } = useAuth();
+    const router = useRouter();
+    const [error, setError] = useState<boolean>(false);
 
     const handleLogin = async () => {
         try {
             const user = await login({ email, password });
+            if (!user) {
+                setError(true);
+                return;
+            }
+            setError(false);
+            router.push('/video');
         } catch (error) {
+            setError(true);
             console.error("Login failed:", error);
         }
     };
@@ -45,6 +54,8 @@ export default function Login() {
                     autoCapitalize="none"
                 />
             </View>
+            {error && <View style={commonStyles.inputContainer}><Text style={commonStyles.errorText}>Login failed. Please try again.</Text></View>}
+
             <TouchableOpacity style={commonStyles.button} onPress={handleLogin}>
                 <Text style={commonStyles.buttonText}>Login</Text>
             </TouchableOpacity>

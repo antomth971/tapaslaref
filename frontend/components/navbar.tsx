@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, useColorScheme, StatusBar, SafeAreaView, StyleSheet, Platform, useWindowDimensions } from "react-native";
 import { Link, usePathname, router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/hooks/providers/AuthProvider";
 
 const Navbar = () => {
@@ -18,7 +17,6 @@ const Navbar = () => {
         try {
             const response = await logout();
             if (response.message) {
-                await AsyncStorage.removeItem("token");
                 setIsDropdownOpen(false);
                 router.push("/login");
             } else {
@@ -34,9 +32,14 @@ const Navbar = () => {
                 <SafeAreaView style={[styles.safeArea]}>
                     <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
                     <View style={[styles.navBarContainer]}>
-                        <Link href="/" style={[styles.brandLink]}>
-                            Tapaslaref
-                        </Link>
+                        {isAuthenticated ?
+                            <Link href="/video" style={[styles.brandLink]}>
+                                Tapaslaref
+                            </Link>
+                            :
+                            <Link href="/" style={[styles.brandLink]}>
+                                Tapaslaref
+                            </Link>}
                         <View style={styles.linksRowRight}>
                             {!isAuthenticated && !isMobile &&
                                 (
@@ -66,7 +69,7 @@ const Navbar = () => {
                                         {isDropdownOpen && (
                                             <View style={styles.dropdownMenu}>
                                                 <TouchableOpacity style={styles.dropdownMenuItem}>
-                                                    <Link href={"/"} style={styles.dropdownMenuItemText}>home</Link>
+                                                    <Link href={"/video"} style={styles.dropdownMenuItemText}>home</Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={handleLogout} style={styles.dropdownMenuItem}>
                                                     <Text style={styles.dropdownMenuItemText}>logout</Text>
@@ -93,9 +96,12 @@ const Navbar = () => {
                             {isAuthenticated ?
                                 <>
                                     <TouchableOpacity>
-                                        <Link href={"/"} style={[styles.mobileMenuText]}>
+                                        <Link href={"/video"} style={[styles.mobileMenuText]}>
                                             Home
                                         </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={handleLogout}>
+                                        <Text style={styles.mobileMenuText}>logout</Text>
                                     </TouchableOpacity>
                                 </>
                                 :
