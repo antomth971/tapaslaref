@@ -7,6 +7,7 @@ import { VideoModule } from './video/video.module';
 import { Video } from './database/entity/video.entity';
 import { User } from './database/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     VideoModule,
     AuthModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

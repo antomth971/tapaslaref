@@ -18,6 +18,15 @@ export class Video {
   @Column()
   transcription: string;
 
+  @Column('float')
+  duration: number;
+
+  @Column()
+  format: string;
+
+  @Column()
+  publicId: string;
+
   @Column()
   score: number;
 
