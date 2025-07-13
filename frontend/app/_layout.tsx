@@ -13,7 +13,6 @@ export default function App() {
         <SafeAreaView style={{ flex: 1 }}>
           <View style={{
             flex: 1,
-            paddingTop: insets.top,
           }}>
             <Navbar />
             <Slot />
