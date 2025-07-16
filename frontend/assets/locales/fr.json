@@ -6,9 +6,9 @@
     "logout": "Déconnexion",
     "description": "Tapaslaref est votre plateforme pour rechercher, partager et télécharger du contenu viral, tel que des mèmes, des vidéos et des photos.",
     "what_you_can_do": "Ce que vous pouvez faire:",
-    "create_account": "Créez un compte ou connectez-vous pour télécharger et partager du contenu.",
+    "create_account": "Créez un compte ou connectez-vous pour mettre en ligne du contenu.",
     "search_videos": "Recherchez des vidéos et des photos populaires en utilisant notre fonction de recherche.",
-    "download_content": "Si vous êtes connecté, vous pouvez également télécharger des photos et des vidéos.",
+    "download_content": "Vous pouvez également télécharger des photos et des vidéos.",
     "footer": "Fait pour partager des mèmes et plus encore!",
     "password_length": "Au moins 10 caractères",
     "password_uppercase": "Au moins une lettre majuscule",
@@ -20,5 +20,13 @@
     "confirm_password": "Confirmer le mot de passe",
     "registration_successful": "Inscription réussie!",
     "already_have_account": "Vous avez déjà un compte? Connectez-vous",
-    "login_failed": "Échec de la connexion. Veuillez réessayer."
+    "login_failed": "Échec de la connexion. Veuillez réessayer.",
+    "search_video": "Rechercher des vidéos",
+    "all": "Tout",
+    "videos": "Vidéos",
+    "images": "Images",
+    "submit": "Soumettre",
+    "no_video_found": "Aucune vidéo trouvée.",
+    "close": "Fermer",
+    "video_chargement": "Chargement de la vidéo"
 }

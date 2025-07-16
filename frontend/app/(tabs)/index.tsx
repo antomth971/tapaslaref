@@ -3,8 +3,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { commonStyles } from '@/constants/style';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
+import { useAuth } from '@/hooks/providers/AuthProvider';
+
 export default function HomeScreen() {
   const { i18n } = useLanguage();
+  const { isAuthenticated } = useAuth();
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.title}>
@@ -29,22 +32,22 @@ export default function HomeScreen() {
           - {i18n.t("download_content")}
         </Text>
       </View>
+      {!isAuthenticated && <>
+        <View style={commonStyles.buttonsContainer}>
+          <TouchableOpacity style={commonStyles.button}>
 
-      <View style={commonStyles.buttonsContainer}>
-        <TouchableOpacity style={commonStyles.button}>
+            <Link href="/register">
+              <Text style={commonStyles.buttonText}>{i18n.t("register")}</Text>
+            </Link>
+          </TouchableOpacity>
+          <TouchableOpacity style={commonStyles.button}>
 
-          <Link href="/register">
-            <Text style={commonStyles.buttonText}>{i18n.t("register")}</Text>
-          </Link>
-        </TouchableOpacity>
-        <TouchableOpacity style={commonStyles.button}>
+            <Link href="/login">
+              <Text style={commonStyles.buttonText}>{i18n.t("login")}</Text>
+            </Link>
+          </TouchableOpacity>
 
-          <Link href="/login">
-            <Text style={commonStyles.buttonText}>{i18n.t("login")}</Text>
-          </Link>
-        </TouchableOpacity>
-
-      </View>
+        </View></>}
 
       <Text style={commonStyles.footer}>
         {i18n.t("footer")}

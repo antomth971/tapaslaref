@@ -1,9 +1,8 @@
-
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Video } from './video.entity';
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()

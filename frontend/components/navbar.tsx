@@ -34,20 +34,12 @@ const Navbar = () => {
                 <SafeAreaView style={[styles.safeArea]}>
                     <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
                     <View style={[styles.navBarContainer]}>
-                        {isAuthenticated ?
-                            <Link href="/video" style={[styles.brandLink]}>
-                                Tapaslaref
-                            </Link>
-                            :
-                            <>
                             <Link href="/" style={[styles.brandLink]}>
                                 Tapaslaref
                             </Link>
                             <Link href="/video" style={[styles.brandLink]}>
                                 video
                             </Link>
-                            </>
-                            }
                         <View style={styles.linksRowRight}>
                             <LanguageSwitcher />
                             {!isAuthenticated && !isMobile &&

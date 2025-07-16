@@ -1,23 +1,23 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { useLanguage } from '@/hooks/providers/LangageProvider'; 
+import Dropdown from './dropdown';
 
 export default function LanguageSwitcher() {
   const { locale, changeLanguage } = useLanguage();
 
   return (
     <View style={styles.container}>
-      <Picker
+      <Dropdown
+        options={[
+          { label: 'English', value: 'en' },
+          { label: 'Français', value: 'fr' },
+        ]}
         selectedValue={locale}
-        onValueChange={(itemValue) => changeLanguage(itemValue)}
+        onSelect={(value) => changeLanguage(value)}
+        placeholder="Select Language"
         style={styles.picker}
-        itemStyle={styles.pickerItem}
-        mode="dropdown"
-      >
-        <Picker.Item label="English" value="en" />
-        <Picker.Item label="Français" value="fr" />
-      </Picker>
+      />
     </View>
   );
 }

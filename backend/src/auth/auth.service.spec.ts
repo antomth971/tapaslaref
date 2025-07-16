@@ -56,14 +56,20 @@ describe('AuthService', () => {
       userService.findByEmail.mockResolvedValue(mockUser);
       (compare as jest.Mock).mockResolvedValue(false);
 
-      const result = await service.validateUser('test@example.com', 'wrongpass');
+      const result = await service.validateUser(
+        'test@example.com',
+        'wrongpass',
+      );
       expect(result).toEqual({ isValid: false, user: null });
     });
 
     it('should return isValid false and null user if user not found', async () => {
       userService.findByEmail.mockResolvedValue(null);
 
-      const result = await service.validateUser('unknown@example.com', 'password');
+      const result = await service.validateUser(
+        'unknown@example.com',
+        'password',
+      );
       expect(result).toEqual({ isValid: false, user: null });
     });
   });

@@ -20,5 +20,13 @@
     "confirm_password": "Confirm Password",
     "registration_successful": "Registration successful!",
     "already_have_account": "Already have an account? Login",
-    "login_failed": "Login failed. Please try again."
+    "login_failed": "Login failed. Please try again.",
+    "search_video": "Search for videos",
+    "all": "All",
+    "videos": "Videos",
+    "images": "Images",
+    "submit": "Submit",
+    "no_video_found": "No videos found.",
+    "close": "Close",
+    "video_chargement": "Loading video"
   }

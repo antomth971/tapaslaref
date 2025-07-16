@@ -1,10 +1,9 @@
-
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 @Entity()
 export class Video {
-  @PrimaryGeneratedColumn("uuid")
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;
@@ -18,8 +17,8 @@ export class Video {
   @Column()
   transcription: string;
 
-  @Column('float')
-  duration: number;
+  @Column('float', { nullable: true })
+  duration: number | null;
 
   @Column()
   format: string;
@@ -32,5 +31,4 @@ export class Video {
 
   @ManyToOne(() => User, (user) => user.videos)
   user: User;
-
 }

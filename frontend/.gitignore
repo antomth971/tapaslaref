@@ -2,7 +2,7 @@
 
 .env
 assets/videos
-
+ios/
 # dependencies
 node_modules/
 

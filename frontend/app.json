@@ -8,14 +8,16 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.frontend"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": []
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +36,8 @@
         }
       ],
       "expo-localization",
+      "react-native-video",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true
