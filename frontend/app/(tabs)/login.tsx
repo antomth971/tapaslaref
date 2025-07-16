@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { Link , useRouter } from 'expo-router';
 import { commonStyles } from '@/constants/style';
-import { useRouter } from 'expo-router';
+
 import { useAuth } from '@/hooks/providers/AuthProvider';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
 

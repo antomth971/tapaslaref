@@ -4,41 +4,44 @@ import { Repository } from 'typeorm';
 import { Video } from '../database/entity/video.entity';
 @Injectable()
 export class VideoService {
-    constructor(
-        @InjectRepository(Video)
-        private videosRepository: Repository<Video>,
-    ) {}
+  constructor(
+    @InjectRepository(Video)
+    private videosRepository: Repository<Video>,
+  ) {}
 
-    findAll(): Promise<Video[]> {
-        return this.videosRepository.find();
-    }
+  findAll(): Promise<Video[]> {
+    return this.videosRepository.find();
+  }
 
-    findOne(id: number): Promise<Video | null> {
-        return this.videosRepository.findOneBy({ id });
-    }
+  findOne(id: string): Promise<Video | null> {
+    return this.videosRepository.findOneBy({ id });
+  }
 
-    async create(video: Video): Promise<Video> {
-        return this.videosRepository.save(video);
-    }
+  async create(video: Video): Promise<Video> {
+    return this.videosRepository.save(video);
+  }
 
-    async update(id: number, video: Video): Promise<Video> {
-        await this.videosRepository.update(id, video);
-        return this.videosRepository.findOneBy({ id });
-    }
+  async update(id: string, video: Video): Promise<Video> {
+    await this.videosRepository.update(id, video);
+    return this.videosRepository.findOneBy({ id });
+  }
 
-    async remove(id: number): Promise<void> {
-        await this.videosRepository.delete(id);
-    }
+  async remove(id: string): Promise<void> {
+    await this.videosRepository.delete(id);
+  }
 
-    async findPaginated(page: number, limit: number): Promise<{ data: Video[]; total: number }> {
-        const [data, total] = await this.videosRepository.findAndCount({
-            skip: (page - 1) * limit,
-            take: limit,
-            order: {
-                score: 'DESC',
-            },
-        });
+  async findPaginated(
+    page: number,
+    limit: number,
+  ): Promise<{ data: Video[]; total: number }> {
+    const [data, total] = await this.videosRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        score: 'DESC',
+      },
+    });
 
-        return { data, total };
-    }
+    return { data, total };
+  }
 }

@@ -4,7 +4,7 @@ interface Video {
     link: string;
     description: string;
     transcription: string;
-    duration: number;
+    duration: number | null;
     format: string;
     publicId: string;
     score: number;

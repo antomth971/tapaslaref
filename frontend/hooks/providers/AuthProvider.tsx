@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import  { loginUser,registerUser, checkIsLogin } from "@/services/AuthService";
+import  { loginUser, checkIsLogin } from "@/services/AuthService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LOGIN from "@/type/feature/auth/login";
 import RETURN from "@/type/request/return_with_message";
@@ -28,12 +28,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const initializeAuthState = async () => {
             try {
+                if (!await AsyncStorage.getItem("token")) {
+                    setIsAuthenticated(false);
+                    const isPublic = publicRoutes.some((route) => {
+                        return pathName === route || pathName.startsWith("/video/");
+                    });
+                    if (!isPublic) {
+                        router.push("/+not-found");
+                    }
+                    return;
+                }
                 const data = await checkIsLogin();
                 if (data.isLoggedIn === true) {
                     setIsAuthenticated(true);
                 } else {
                     setIsAuthenticated(false);
-                    await AsyncStorage.removeItem("token");
+                    await AsyncStorage.removeItem("token");                    
                     const isPublic = publicRoutes.some((route) => {
                         return pathName === route || pathName.startsWith("/video/");
                       })

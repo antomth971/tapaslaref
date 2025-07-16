@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,7 +18,7 @@ export class UserService {
     return this.usersRepository.findOneBy({ id });
   }
 
-  findByEmail(email: string): Promise<User | null> {    
+  findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOneBy({ email });
   }
 

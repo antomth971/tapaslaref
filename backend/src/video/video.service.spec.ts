@@ -13,7 +13,7 @@ describe('VideoService', () => {
         VideoService,
         {
           provide: getRepositoryToken(Video),
-          useClass: Repository, 
+          useClass: Repository,
         },
       ],
     }).compile();

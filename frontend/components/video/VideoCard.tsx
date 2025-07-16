@@ -9,16 +9,18 @@ import {
 import { useVideoPlayer, VideoView } from 'expo-video';
 import Props from '@/type/feature/video/videoCardProps';
 
-export const VideoCard = ({ id, uri, format, cardSize }: Props) => {
-  const isVideo = format === 'mp4' || format === 'webm';
+export const VideoCard = ({ _id, id, uri, format, cardSize, onPress }: Props) => {
+  const isVideo = format === 'video';
 
   if (!isVideo) {
     return (
-      <Image
-        source={{ uri }}
-        style={[styles.video, { width: cardSize, height: cardSize }]}
-        resizeMode="cover"
-      />
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Image
+          source={{ uri }}
+          style={[styles.video, { width: cardSize, height: cardSize }]}
+          resizeMode="cover"
+        />
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -33,6 +35,7 @@ export const VideoCard = ({ id, uri, format, cardSize }: Props) => {
 
   return (
     <TouchableWithoutFeedback
+      onPress={onPress}
       onPressIn={Platform.OS !== 'web' ? handlePlay : undefined}
       onPressOut={Platform.OS !== 'web' ? handlePause : undefined}
     >
@@ -40,9 +43,9 @@ export const VideoCard = ({ id, uri, format, cardSize }: Props) => {
         style={[styles.video, { width: cardSize, height: cardSize }]}
         {...(Platform.OS === 'web'
           ? {
-              onMouseEnter: handlePlay,
-              onMouseLeave: handlePause,
-            }
+            onMouseEnter: handlePlay,
+            onMouseLeave: handlePause,
+          }
           : {})}
       >
         <VideoView
@@ -50,6 +53,7 @@ export const VideoCard = ({ id, uri, format, cardSize }: Props) => {
           style={{ width: '100%', height: '100%' }}
           allowsFullscreen={false}
           allowsPictureInPicture={false}
+          nativeControls={false}
         />
       </View>
     </TouchableWithoutFeedback>

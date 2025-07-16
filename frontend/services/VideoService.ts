@@ -24,3 +24,14 @@ export async function getCloudinaryMedia() {
     throw error;
   }
 }
+
+export async function getVideoById(id: string) {
+  const config = await getConfig();
+  try {
+    const response = await axios.get(`${API_URL}/video/${id}`, config);
+    return response.data;
+  } catch (error) {
+    console.error(`Erreur lors du chargement de la vidéo avec l'ID ${id}`, error);
+    throw error;
+  }
+}

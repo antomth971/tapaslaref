@@ -42,18 +42,30 @@ describe('AuthController', () => {
 
   describe('signIn', () => {
     it('should return access token on valid credentials', async () => {
-      authService.validateUser.mockResolvedValue({ isValid: true, user: { id: 1, email: 'user@test.com' } });
+      authService.validateUser.mockResolvedValue({
+        isValid: true,
+        user: { id: 1, email: 'user@test.com' },
+      });
       authService.login.mockResolvedValue({ access_token: 'jwt.token' });
 
-      const result = await controller.signIn({ email: 'user@test.com', password: 'password' });
+      const result = await controller.signIn({
+        email: 'user@test.com',
+        password: 'password',
+      });
       expect(result).toEqual({ access_token: 'jwt.token' });
     });
 
     it('should return error message on invalid credentials', async () => {
-      authService.validateUser.mockResolvedValue({ isValid: false, user: null });
+      authService.validateUser.mockResolvedValue({
+        isValid: false,
+        user: null,
+      });
       authService.login.mockResolvedValue(null);
 
-      const result = await controller.signIn({ email: 'user@test.com', password: 'wrongpass' });
+      const result = await controller.signIn({
+        email: 'user@test.com',
+        password: 'wrongpass',
+      });
       expect(result).toEqual({ message: 'Invalid credentials' });
     });
   });
@@ -62,14 +74,20 @@ describe('AuthController', () => {
     it('should return message: true when registration is successful', async () => {
       authService.register.mockResolvedValue(true);
 
-      const result = await controller.signUp({ email: 'new@user.com', password: '123456' });
+      const result = await controller.signUp({
+        email: 'new@user.com',
+        password: '123456',
+      });
       expect(result).toEqual({ message: true });
     });
 
     it('should return message: false when registration fails', async () => {
       authService.register.mockResolvedValue(false);
 
-      const result = await controller.signUp({ email: 'existing@user.com', password: '123456' });
+      const result = await controller.signUp({
+        email: 'existing@user.com',
+        password: '123456',
+      });
       expect(result).toEqual({ message: false });
     });
   });
