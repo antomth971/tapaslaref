@@ -28,5 +28,11 @@
     "submit": "Soumettre",
     "no_video_found": "Aucune vidéo trouvée.",
     "close": "Fermer",
-    "video_chargement": "Chargement de la vidéo"
+    "video_chargement": "Chargement de la vidéo",
+    "settings": "Paramètres",
+    "summary": "Sommaire",
+    "language": "Langue",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre"
 }

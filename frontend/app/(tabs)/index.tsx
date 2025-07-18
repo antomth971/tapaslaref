@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
-import { commonStyles } from '@/constants/style';
+import { useCommonStyles } from '@/constants/style';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
 import { useAuth } from '@/hooks/providers/AuthProvider';
 
 export default function HomeScreen() {
   const { i18n } = useLanguage();
   const { isAuthenticated } = useAuth();
+  const commonStyles = useCommonStyles();
+
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.title}>
