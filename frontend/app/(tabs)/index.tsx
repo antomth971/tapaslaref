@@ -8,50 +8,50 @@ import { useAuth } from '@/hooks/providers/AuthProvider';
 export default function HomeScreen() {
   const { i18n } = useLanguage();
   const { isAuthenticated } = useAuth();
-  const commonStyles = useCommonStyles();
+  const { styles } = useCommonStyles();
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.title}>
+    <View style={styles.container}>
+      <Text style={styles.title}>
         {i18n.t("welcome")}
       </Text>
-      <Text style={commonStyles.description}>
+      <Text style={styles.description}>
         {i18n.t("description")}
       </Text>
 
-      <Text style={commonStyles.subTitle}>
+      <Text style={styles.subTitle}>
         {i18n.t("what_you_can_do")}
       </Text>
 
-      <View style={commonStyles.actionsContainer}>
-        <Text style={commonStyles.actionText}>
+      <View style={styles.actionsContainer}>
+        <Text style={styles.actionText}>
           - {i18n.t("create_account")}
         </Text>
-        <Text style={commonStyles.actionText}>
+        <Text style={styles.actionText}>
           - {i18n.t("search_videos")}
         </Text>
-        <Text style={commonStyles.actionText}>
+        <Text style={styles.actionText}>
           - {i18n.t("download_content")}
         </Text>
       </View>
       {!isAuthenticated && <>
-        <View style={commonStyles.buttonsContainer}>
-          <TouchableOpacity style={commonStyles.button}>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button}>
 
             <Link href="/register">
-              <Text style={commonStyles.buttonText}>{i18n.t("register")}</Text>
+              <Text style={styles.buttonText}>{i18n.t("register")}</Text>
             </Link>
           </TouchableOpacity>
-          <TouchableOpacity style={commonStyles.button}>
+          <TouchableOpacity style={styles.button}>
 
             <Link href="/login">
-              <Text style={commonStyles.buttonText}>{i18n.t("login")}</Text>
+              <Text style={styles.buttonText}>{i18n.t("login")}</Text>
             </Link>
           </TouchableOpacity>
 
         </View></>}
 
-      <Text style={commonStyles.footer}>
+      <Text style={styles.footer}>
         {i18n.t("footer")}
       </Text>
     </View>

@@ -8,7 +8,6 @@ const ThemeSwitcher = () => {
     const { colorScheme, setColorScheme } = useTheme();
     const { i18n } = useLanguage();
     return (
-        <View style={styles.container}>
             <Dropdown
                 options={[
                     { label: i18n.t('light'), value: "light" },
@@ -19,7 +18,6 @@ const ThemeSwitcher = () => {
                 placeholder="Select Theme"
                 style={styles.picker}
             />
-        </View>
     );
 };
 const styles = StyleSheet.create({

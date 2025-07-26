@@ -6,7 +6,6 @@ export default function LanguageSwitcher() {
   const { locale, changeLanguage } = useLanguage();
 
   return (
-    <View style={styles.container}>
       <Dropdown
         options={[
           { label: 'English', value: 'en' },
@@ -17,7 +16,6 @@ export default function LanguageSwitcher() {
         placeholder="Select Language"
         style={styles.picker}
       />
-    </View>
   );
 }
 

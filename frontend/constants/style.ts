@@ -33,7 +33,6 @@ export function useCommonStyles() {
         subtitle: '#555',
       };
 
-  // Styles dynamiques selon le thème
   const styles = useMemo(() => StyleSheet.create({
     container: {
       flex: 1,
@@ -167,5 +166,5 @@ export function useCommonStyles() {
     },
   }), [palette]);
 
-  return styles;
+  return { styles, palette };
 }
