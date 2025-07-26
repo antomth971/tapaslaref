@@ -1,26 +1,30 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { commonStyles } from '@/constants/style';
-import { useLanguage } from '@/hooks/providers/LangageProvider';  
+import { useCommonStyles } from '@/constants/style';
+import { useLanguage } from '@/hooks/providers/LangageProvider';
 import Dropdown from '../dropdown';
 import ListHeaderProps from '@/type/feature/video/ListHeader';
 
-const ListHeader: React.FC<ListHeaderProps> = ({ pendingQuery, setPendingQuery, setSearchQuery, filter, setFilter, style }) => {
+const ListHeader: React.FC<ListHeaderProps> = ({
+  pendingQuery, setPendingQuery, setSearchQuery, filter, setFilter, style
+}) => {
+  const {styles} = useCommonStyles();
   const { i18n } = useLanguage();
+
   return (
-      <View style={[commonStyles.justifyContent, style, { zIndex: 1000, position: 'relative', }]}>
-        <TextInput
-          placeholder={i18n.t('search_video')}
-        placeholderTextColor={'#B0B0B0'}
+    <View style={[styles.justifyContent, style, { zIndex: 1000, position: 'relative' }]}>
+      <TextInput
+        placeholder={i18n.t('search_video')}
+        placeholderTextColor={styles.input.borderColor}
         value={pendingQuery}
         onChangeText={setPendingQuery}
-        style={{ width: 150, height: 45, borderColor: '#B0B0B0', borderWidth: 1, borderRadius: 8 }}
+        style={[styles.input, { width: 150 }]}
       />
       <TouchableOpacity
         onPress={() => setSearchQuery(pendingQuery)}
-        style={commonStyles.button}
+        style={[styles.button, { minWidth: 60, marginLeft: 10 }]}
       >
-        <Text>{i18n.t('submit')}</Text>
+        <Text style={styles.buttonText}>{i18n.t('submit')}</Text>
       </TouchableOpacity>
       <Dropdown
         options={[
@@ -28,9 +32,9 @@ const ListHeader: React.FC<ListHeaderProps> = ({ pendingQuery, setPendingQuery, 
           { label: i18n.t('videos'), value: 'videos' },
           { label: i18n.t('images'), value: 'images' },
         ]}
-        onSelect={(value: string) => setFilter(value as 'all' | 'videos' | 'images')}
+        onSelect={v => setFilter(v as 'all' | 'videos' | 'images')}
         selectedValue={filter}
-        style={{ width: 100, height: 40, borderColor: '#B0B0B0', borderWidth: 1, borderRadius: 8, zIndex: 1000 }}
+        style={{ width: 100, height: 40, marginLeft: 10 }}
       />
     </View>
   );

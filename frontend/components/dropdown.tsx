@@ -13,7 +13,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     const selected = options.find(opt => opt.value === selectedValue);
 
     const renderOptions = () => (
-        <ScrollView style={Platform.OS === 'web' ? styles.dropdown : styles.dropdownModal} nestedScrollEnabled>
+        <ScrollView style={styles.dropdownModal} nestedScrollEnabled>
             {options.map(opt => (
                 <TouchableOpacity
                     key={opt.value}
@@ -51,10 +51,8 @@ const Dropdown: React.FC<DropdownProps> = ({
                 <Text style={styles.arrow}>{open ? "▲" : "▼"}</Text>
             </TouchableOpacity>
 
-            {open && Platform.OS === 'web' && renderOptions()}
-
             <Modal
-                visible={open && Platform.OS !== 'web'}
+                visible={open}
                 transparent
                 animationType="fade"
                 onRequestClose={() => setOpen(false)}

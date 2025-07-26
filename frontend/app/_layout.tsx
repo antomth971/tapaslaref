@@ -4,10 +4,12 @@ import { Slot } from "expo-router";
 import Navbar from '@/components/navbar';
 import { AuthProvider } from '@/hooks/providers/AuthProvider';
 import { LanguageProvider } from '@/hooks/providers/LangageProvider';
+import { ThemeProvider } from '@/hooks/providers/ThemeProvider';
 
 export default function App() {
   return (
     <LanguageProvider>
+      <ThemeProvider>
       <AuthProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={{
@@ -18,6 +20,7 @@ export default function App() {
           </View>
         </SafeAreaView>
       </AuthProvider>
+      </ThemeProvider>
     </LanguageProvider>
   );
 }

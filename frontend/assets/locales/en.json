@@ -28,5 +28,11 @@
     "submit": "Submit",
     "no_video_found": "No videos found.",
     "close": "Close",
-    "video_chargement": "Loading video"
+    "video_chargement": "Loading video",
+    "settings": "Settings",
+    "language": "Language",
+    "summary": "Summary",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
   }
