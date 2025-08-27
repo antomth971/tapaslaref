@@ -78,6 +78,9 @@ const Navbar = () => {
                                                     <Link href={"/"} style={styles.dropdownMenuItemText}>{i18n.t("home")}</Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity style={styles.dropdownMenuItem}>
+                                                    <Link href={"/video/upload"} style={styles.dropdownMenuItemText}>{i18n.t("upload")}</Link>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={styles.dropdownMenuItem}>
                                                     <Link href={"/settings"} style={styles.dropdownMenuItemText}>
                                                         {i18n.t("settings")}
                                                     </Link>
@@ -104,14 +107,23 @@ const Navbar = () => {
                     </View>
 
                     {/* Mobile Menu */}
-                    {menuOpen && isMobile && (
+                    {menuOpen && isMobile && isAuthenticated && (
                         <View style={styles.mobileMenu}>
-                            {isAuthenticated ?
                                 <>
                                     <TouchableOpacity>
                                         <Link href={"/video"} style={styles.mobileMenuText}>
                                             {i18n.t("home")}
                                         </Link>
+                                        <TouchableOpacity>
+                                        <Link href={"/video/upload"} style={styles.mobileMenuText}>
+                                            {i18n.t("upload")}
+                                        </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Link href={"/settings"} style={styles.mobileMenuText}>
+                                            {i18n.t("settings")}
+                                        </Link>
+                                    </TouchableOpacity>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={handleLogout}>
                                         <Text style={styles.mobileMenuText}>{i18n.t("logout")}</Text>
@@ -130,7 +142,6 @@ const Navbar = () => {
                                         </Link>
                                     </TouchableOpacity>
                                 </>
-                            }
                         </View>
                     )}
                 </SafeAreaView>
