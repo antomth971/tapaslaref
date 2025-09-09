@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/providers/ThemeProvider';
 import Dropdown from '../dropdown';
 import { useLanguage } from '@/hooks/providers/LangageProvider';

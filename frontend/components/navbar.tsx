@@ -78,7 +78,7 @@ const Navbar = () => {
                                                     <Link href={"/"} style={styles.dropdownMenuItemText}>{i18n.t("home")}</Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity style={styles.dropdownMenuItem}>
-                                                    <Link href={"/video/upload"} style={styles.dropdownMenuItemText}>{i18n.t("upload")}</Link>
+                                                    <Link href={"/upload"} style={styles.dropdownMenuItemText}>{i18n.t("upload")}</Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity style={styles.dropdownMenuItem}>
                                                     <Link href={"/settings"} style={styles.dropdownMenuItemText}>
@@ -115,7 +115,7 @@ const Navbar = () => {
                                             {i18n.t("home")}
                                         </Link>
                                         <TouchableOpacity>
-                                        <Link href={"/video/upload"} style={styles.mobileMenuText}>
+                                        <Link href={"/upload"} style={styles.mobileMenuText}>
                                             {i18n.t("upload")}
                                         </Link>
                                     </TouchableOpacity>
