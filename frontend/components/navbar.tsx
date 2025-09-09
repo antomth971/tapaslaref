@@ -107,8 +107,9 @@ const Navbar = () => {
                     </View>
 
                     {/* Mobile Menu */}
-                    {menuOpen && isMobile && isAuthenticated && (
+                    {menuOpen && isMobile && (
                         <View style={styles.mobileMenu}>
+                            {isAuthenticated ? (
                                 <>
                                     <TouchableOpacity>
                                         <Link href={"/video"} style={styles.mobileMenuText}>
@@ -129,7 +130,7 @@ const Navbar = () => {
                                         <Text style={styles.mobileMenuText}>{i18n.t("logout")}</Text>
                                     </TouchableOpacity>
                                 </>
-                                :
+                            ) : (
                                 <>
                                     <TouchableOpacity>
                                         <Link href={"/login"} style={styles.mobileMenuText}>
@@ -142,6 +143,7 @@ const Navbar = () => {
                                         </Link>
                                     </TouchableOpacity>
                                 </>
+                            )}
                         </View>
                     )}
                 </SafeAreaView>

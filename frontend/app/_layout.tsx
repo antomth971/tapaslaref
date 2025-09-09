@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Slot } from "expo-router";
 import Navbar from '@/components/navbar';
 import { AuthProvider } from '@/hooks/providers/AuthProvider';
@@ -8,21 +8,21 @@ import { ThemeProvider } from '@/hooks/providers/ThemeProvider';
 import GoogleReCaptchaProviderWrapper from '@/hooks/providers/CaptchaProvider.web';
 
 export default function App() {
- 
+const isWeb = Platform.OS === 'web';
   return (
     <LanguageProvider>
       <ThemeProvider>
       <AuthProvider>
-        <GoogleReCaptchaProviderWrapper>
-          <SafeAreaView style={{ flex: 1 }}>
-            <View style={{
-              flex: 1,
-            }}>
+        {isWeb && <GoogleReCaptchaProviderWrapper />}
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{
+            flex: 1,
+          }}>
             <Navbar />
             <Slot />
           </View>
         </SafeAreaView>
-        </GoogleReCaptchaProviderWrapper>
+        { isWeb && <GoogleReCaptchaProviderWrapper /> }
       </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>
