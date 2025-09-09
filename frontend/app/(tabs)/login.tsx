@@ -24,7 +24,6 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             setRefreshReCaptcha(r => !r);
-            return;
             const user = await login({ email, password });
             if (!user) {
                 setError(true);
