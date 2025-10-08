@@ -45,7 +45,7 @@ export async function getVideoById(id: string) {
 export async function uploadAssetsWeb(
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
-  endpoint: string = `${API_URL}/upload`
+  endpoint: string = `${API_URL}/video/upload`
 ): Promise<string[]> {
   const config = await getConfig();
   const authHeader = (config?.headers?.Authorization ?? '') as string;
@@ -97,7 +97,7 @@ export async function uploadAssetsWeb(
 export async function uploadAssetsNative(
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
-  endpoint: string = `${API_URL}/upload`
+  endpoint: string = `${API_URL}/video/upload`
 ): Promise<NativeUploadResult[]> {
   const config = await getConfig();
   const authHeader = (config?.headers?.Authorization ?? '') as string;
@@ -156,7 +156,7 @@ export async function uploadAssets(
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
 ) {
-  const url = `${API_URL}/upload`;
+  const url = `${API_URL}/video/upload`;
   if (Platform.OS === 'web') return uploadAssetsWeb(assets, onTotalProgress, url);
   return uploadAssetsNative(assets, onTotalProgress, url);
 }

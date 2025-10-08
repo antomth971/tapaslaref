@@ -70,7 +70,7 @@ export default function VideoUploadScreen() {
     try {
       await uploadAssets(assets, setProgress);
       Alert.alert(i18n.t('success'), i18n.t('upload_finished'));
-      setAssets([]);
+      // setAssets([]);
     } catch (e) {
       console.error(e);
       Alert.alert(i18n.t('error'), i18n.t('upload_failed'));
@@ -109,84 +109,85 @@ export default function VideoUploadScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-      <View style={styles.headerCard}>
-        <Text style={styles.title}>{i18n.t('upload_header_title')}</Text>
-        <Text style={styles.subtitle}>
-          {i18n.t('upload_header_subtitle')}
-        </Text>
-        <Pressable style={[common.button, styles.primaryButton]} onPress={pickMedia} disabled={uploading}>
-          <Text style={common.buttonText}>{i18n.t('choose_media')}</Text>
-        </Pressable>
-      </View>
-
-      {!!assets.length && (
-        <View style={styles.card}>
-          {renderItem({ item: assets[0] })}
-          <Text style={styles.helperText}>
-            {assets.length} {i18n.t('files_label')} · {formatBytes(totalSize)}
+        <View style={styles.headerCard}>
+          <Text style={styles.title}>{i18n.t('upload_header_title')}</Text>
+          <Text style={styles.subtitle}>
+            {i18n.t('upload_header_subtitle')}
           </Text>
-        </View>
-      )}
-
-      <View style={styles.card}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>{i18n.t('title')}</Text>
-          <TextInput
-            value={video?.title}
-            onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, title: text } : null))}
-            style={styles.input}
-            placeholder={i18n.t('title_placeholder')}
-            placeholderTextColor={palette.inputBorder}
-          />
+          <Pressable style={[common.button, styles.primaryButton]} onPress={pickMedia} disabled={uploading}>
+            <Text style={common.buttonText}>{i18n.t('choose_media')}</Text>
+          </Pressable>
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>{i18n.t('description_label')}</Text>
-          <TextInput
-            value={video?.description}
-            onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, description: text } : null))}
-            style={[styles.input, styles.multiline]}
-            multiline
-            numberOfLines={4}
-            placeholder={i18n.t('description_placeholder')}
-            placeholderTextColor={palette.inputBorder}
-          />
-        </View>
-
-        {video?.format === 'video' && (
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{i18n.t('transcription')}</Text>
-            <TextInput
-              value={video?.transcription}
-              onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, transcription: text } : null))}
-              style={[styles.input, styles.multiline]}
-              multiline
-              numberOfLines={4}
-              placeholder={i18n.t('transcription_placeholder')}
-              placeholderTextColor={palette.inputBorder}
-            />
+        {!!assets.length && (
+          <View style={styles.card}>
+            {renderItem({ item: assets[0] })}
+            <Text style={styles.helperText}>
+              {assets.length} {i18n.t('files_label')} · {formatBytes(totalSize)}
+            </Text>
           </View>
         )}
-      </View>
-
-      {!!assets.length && (
-        <Pressable
-          style={[common.button, styles.ctaButton, uploading && styles.buttonDisabled]}
-          onPress={onUpload}
-          disabled={uploading}
-        >
-          {uploading ? (
-            <View style={styles.rowCenter}>
-              <ActivityIndicator color={palette.text} />
-              <Text style={[common.buttonText, { marginLeft: 8 }]}>
-                {i18n.t('upload_progress_prefix')} {Math.round(progress * 100)}%
-              </Text>
+        {assets.length > 0 && (
+          <View style={styles.card}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{i18n.t('title')}</Text>
+              <TextInput
+                value={video?.title}
+                onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, title: text } : null))}
+                style={styles.input}
+                placeholder={i18n.t('title_placeholder')}
+                placeholderTextColor={palette.inputBorder}
+              />
             </View>
-          ) : (
-            <Text style={common.buttonText}>{i18n.t('upload_button')}</Text>
-          )}
-        </Pressable>
-      )}
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{i18n.t('description_label')}</Text>
+              <TextInput
+                value={video?.description}
+                onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, description: text } : null))}
+                style={[styles.input, styles.multiline]}
+                multiline
+                numberOfLines={4}
+                placeholder={i18n.t('description_placeholder')}
+                placeholderTextColor={palette.inputBorder}
+              />
+            </View>
+
+            {video?.format === 'video' && (
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>{i18n.t('transcription')}</Text>
+                <TextInput
+                  value={video?.transcription}
+                  onChangeText={(text: string) => setVideo((prev) => (prev ? { ...prev, transcription: text } : null))}
+                  style={[styles.input, styles.multiline]}
+                  multiline
+                  numberOfLines={4}
+                  placeholder={i18n.t('transcription_placeholder')}
+                  placeholderTextColor={palette.inputBorder}
+                />
+              </View>
+            )}
+          </View>
+        )}
+
+        {!!assets.length && (
+          <Pressable
+            style={[common.button, styles.ctaButton, uploading && styles.buttonDisabled]}
+            onPress={onUpload}
+            disabled={uploading}
+          >
+            {uploading ? (
+              <View style={styles.rowCenter}>
+                <ActivityIndicator color={palette.text} />
+                <Text style={[common.buttonText, { marginLeft: 8 }]}>
+                  {i18n.t('upload_progress_prefix')} {Math.round(progress * 100)}%
+                </Text>
+              </View>
+            ) : (
+              <Text style={common.buttonText}>{i18n.t('upload_button')}</Text>
+            )}
+          </Pressable>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
