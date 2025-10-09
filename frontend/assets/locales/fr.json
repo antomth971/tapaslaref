@@ -47,6 +47,7 @@
   "transcription_placeholder": "Ajoute une transcription (optionnel)",
   "upload_button": "Uploader",
   "upload_progress_prefix": "Upload…",
+  "validating_content": "Validation du contenu…",
   "files_label": "fichier(s)",
   "file_default_name": "Fichier",
   "unknown_type": "type inconnu",

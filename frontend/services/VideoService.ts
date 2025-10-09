@@ -43,6 +43,7 @@ export async function getVideoById(id: string) {
 }
 
 export async function uploadAssetsWeb(
+  info: { description: string; transcription: string },
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
   endpoint: string = `${API_URL}/video/upload`
@@ -64,6 +65,8 @@ export async function uploadAssetsWeb(
     const resText: string = await new Promise((resolve, reject) => {
       const form = new FormData();
       form.append('file', file, file.name);
+      form.append('description', info.description);
+      form.append('transcription', info.transcription);
 
       const xhr = new XMLHttpRequest();
       xhr.open('POST', endpoint);
@@ -95,6 +98,7 @@ export async function uploadAssetsWeb(
 }
 
 export async function uploadAssetsNative(
+  info: { description: string; transcription: string },
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
   endpoint: string = `${API_URL}/video/upload`
@@ -127,6 +131,10 @@ export async function uploadAssetsNative(
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: 'file',
         mimeType: a.mimeType,
+        parameters: {
+          description: info.description,
+          transcription: info.transcription,
+        },
         headers: {
           ...(authHeader ? { Authorization: authHeader } : {}),
         },
@@ -153,12 +161,13 @@ export async function uploadAssetsNative(
 }
 
 export async function uploadAssets(
+  info: { description: string; transcription: string },
   assets: PickerAsset[],
   onTotalProgress: (p: number) => void,
 ) {
   const url = `${API_URL}/video/upload`;
-  if (Platform.OS === 'web') return uploadAssetsWeb(assets, onTotalProgress, url);
-  return uploadAssetsNative(assets, onTotalProgress, url);
+  if (Platform.OS === 'web') return uploadAssetsWeb(info, assets, onTotalProgress, url);
+  return uploadAssetsNative(info, assets, onTotalProgress, url);
 }
 
 export function formatBytes(bytes?: number): string {

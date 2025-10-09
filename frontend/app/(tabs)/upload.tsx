@@ -18,6 +18,7 @@ import type { PickerAsset } from '@/services/VideoService';
 import Video from '@/type/feature/video/video';
 import { useCommonStyles } from '@/constants/style';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
+import { useRouter } from 'expo-router';
 
 export default function VideoUploadScreen() {
   const { styles: common, palette } = useCommonStyles();
@@ -25,12 +26,14 @@ export default function VideoUploadScreen() {
   const [assets, setAssets] = useState<PickerAsset[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [validating, setValidating] = useState<boolean>(false);
   const [video, setVideo] = useState<Video | null>(null);
   const { i18n } = useLanguage();
   const totalSize = useMemo(
     () => assets.reduce((acc, a) => acc + (a.size ?? 0), 0),
     [assets]
   );
+  const router = useRouter();
 
   const pickMedia = async (): Promise<void> => {
     try {
@@ -66,9 +69,19 @@ export default function VideoUploadScreen() {
     }
     setUploading(true);
     setProgress(0);
-
+    setValidating(false);
+    let uploadResult = null;
     try {
-      await uploadAssets(assets, setProgress);
+        uploadResult = await uploadAssets(
+        { description: video?.description || '', transcription: video?.transcription || '' },
+        assets,
+        (p: number) => {
+          setProgress(p);
+          if (p >= 0.99) {
+            setValidating(true);
+          }
+        }
+      );
       Alert.alert(i18n.t('success'), i18n.t('upload_finished'));
       // setAssets([]);
     } catch (e) {
@@ -76,7 +89,14 @@ export default function VideoUploadScreen() {
       Alert.alert(i18n.t('error'), i18n.t('upload_failed'));
     } finally {
       setUploading(false);
-      setProgress(0);
+      setValidating(false);
+      setProgress(0);      
+      if (Platform.OS === 'web' && uploadResult) {
+        const parsed = JSON.parse(uploadResult[0]);
+        if (parsed?.video?.id && parsed?.success) {
+          router.push('/video?id=' + parsed.video.id);
+        }
+      }
     }
   };
 
@@ -180,7 +200,10 @@ export default function VideoUploadScreen() {
               <View style={styles.rowCenter}>
                 <ActivityIndicator color={palette.text} />
                 <Text style={[common.buttonText, { marginLeft: 8 }]}>
-                  {i18n.t('upload_progress_prefix')} {Math.round(progress * 100)}%
+                  {validating
+                    ? i18n.t('validating_content')
+                    : `${i18n.t('upload_progress_prefix')} ${Math.round(progress * 100)}%`
+                  }
                 </Text>
               </View>
             ) : (
