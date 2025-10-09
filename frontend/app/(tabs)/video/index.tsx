@@ -34,21 +34,36 @@ export default function VideoGridScreen() {
   const router = useRouter();
   const params = useSearchParams();
   const [modalVisible, setModalVisible] = useState(!!params.get('id'));
+  const [selectedVideo, setSelectedVideo] = useState<video | null>(null);
   const { i18n } = useLanguage();
 
-  const openModal = (id: string) => {
-    router.setParams({ id });
+  const openModal = (videoData: video) => {
+    router.setParams({ id: videoData.id });
+    setSelectedVideo(videoData);
     setModalVisible(true);
   };
 
   const closeModal = () => {
     router.setParams({ id: undefined });
     setModalVisible(false);
+    setSelectedVideo(null);
   };
 
   useEffect(() => {
     resetAndLoad();
   }, [filter, searchQuery]);
+
+  useEffect(() => {
+    const videoIdFromUrl = params.get('id');
+    if (videoIdFromUrl && !selectedVideo) {
+      // Chercher la vidéo dans la liste déjà chargée
+      const foundVideo = mediaList.find(v => v.id === videoIdFromUrl);
+      if (foundVideo) {
+        setSelectedVideo(foundVideo);
+        setModalVisible(true);
+      }
+    }
+  }, [params, mediaList]);
 
   const resetAndLoad = () => {
     setMediaList([]);
@@ -100,7 +115,7 @@ export default function VideoGridScreen() {
       uri={item.link}
       format={item.format}
       cardSize={cardSize}
-      onPress={() => openModal(item.id)}
+      onPress={() => openModal(item)}
     />
   );
 
@@ -138,11 +153,15 @@ export default function VideoGridScreen() {
           ) : null
         }
       />
-      {modalVisible && (
+      {modalVisible && selectedVideo && (
         <VideoModal
           visible={modalVisible}
           onClose={closeModal}
-          videoId={params.get('id') || ''}
+          videoId={selectedVideo.id}
+          title={selectedVideo.title}
+          description={selectedVideo.description}
+          transcription={selectedVideo.transcription}
+          format={selectedVideo.format}
         />
       )}
     </>

@@ -14,4 +14,7 @@ Runs the TypeORM migrations to update the database schema.
 ### `npm run seed:run -- -- -d .\src\data-source.ts`
 Runs the seed script to populate the database with initial data.
 
+### `npm run test`
+Runs the test suite for the backend.
+
 

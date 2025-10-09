@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Link , useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useCommonStyles } from '@/constants/style';
-
 import { useAuth } from '@/hooks/providers/AuthProvider';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function Login() {
     const { i18n } = useLanguage();
@@ -14,9 +14,16 @@ export default function Login() {
     const { login } = useAuth();
     const router = useRouter();
     const [error, setError] = useState<boolean>(false);
+    const [token, setToken] = useState<string>();
+    const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
+
+    const onVerify = useCallback((token: string) => {
+        setToken(token);
+    }, []);
 
     const handleLogin = async () => {
         try {
+            setRefreshReCaptcha(r => !r);
             const user = await login({ email, password });
             if (!user) {
                 setError(true);
@@ -55,6 +62,12 @@ export default function Login() {
                     onChangeText={setPassword}
                     secureTextEntry
                     autoCapitalize="none"
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <GoogleReCaptcha
+                    onVerify={onVerify}
+                    refreshReCaptcha={refreshReCaptcha}
                 />
             </View>
             {error && (

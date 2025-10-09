@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Video } from '../database/entity/video.entity';
+import { User } from '../database/entity/user.entity';
 @Injectable()
 export class VideoService {
   constructor(
     @InjectRepository(Video)
     private videosRepository: Repository<Video>,
-  ) {}
+  ) { }
 
   findAll(): Promise<Video[]> {
     return this.videosRepository.find();
@@ -43,5 +44,44 @@ export class VideoService {
     });
 
     return { data, total };
+  }
+  /**
+   * Prépare les données pour l'upload Cloudinary
+   */
+  prepareUploadData(
+    file: Express.Multer.File,
+    description: string,
+    transcription: string,
+  ) {
+    return {
+      buffer: file.buffer,
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      description: description || '',
+      transcription: transcription || '',
+    };
+  }
+
+  /**
+   * Sauvegarde une vidéo après upload et modération réussie
+   */
+  async saveUploadedVideo(
+    cloudinaryData: any,
+    description: string,
+    transcription: string,
+    user: User
+  ): Promise<Video> {
+    const video = new Video();
+    video.title = cloudinaryData.original_filename || 'Untitled';
+    video.format = cloudinaryData.resource_type || 'video';
+    video.link = cloudinaryData.secure_url;
+    video.duration = cloudinaryData.duration || 0;
+    video.publicId = cloudinaryData.public_id;
+    video.score = 0;
+    video.description = description || '';
+    video.transcription = transcription || '';
+    video.user = user;
+    return this.videosRepository.save(video);
   }
 }
