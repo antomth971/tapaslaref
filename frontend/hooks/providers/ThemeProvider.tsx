@@ -6,13 +6,13 @@ import ThemeContextType from "@/type/feature/settings/context";
 const THEME_KEY = "theme";
 
 const defaultContextValue: ThemeContextType = {
-    colorScheme: "light",
+    colorScheme: "dark",
     setColorScheme: () => { }
 };
 const ThemeContext = createContext<ThemeContextType>(defaultContextValue);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-    const [colorScheme, setColorScheme] = useState<"light" | "dark">("light");
+    const [colorScheme, setColorScheme] = useState<"light" | "dark">("dark");
 
     useEffect(() => {
         const loadTheme = async () => {

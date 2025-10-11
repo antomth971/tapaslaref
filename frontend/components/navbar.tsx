@@ -35,13 +35,16 @@ const Navbar = () => {
                 <SafeAreaView style={styles.safeArea}>
                     <StatusBar barStyle={colorScheme === 'dark' ? "light-content" : "dark-content"} />
                     <View style={styles.navBarContainer}>
-                        <Link href="/" style={styles.brandLink}>
-                            Tapaslaref
-                        </Link>
-                        <Link href="/video" style={styles.brandLink}>
-                            video
-                        </Link>
-
+                        <View style={styles.brandSection}>
+                            <Link href="/" style={styles.brandLink}>
+                                Tapaslaref
+                            </Link>
+                            {!isAuthenticated && !isMobile &&
+                                <Link href="/video" style={[styles.navLink, { marginLeft: 20 }]}>
+                                    {i18n.t("discover_videos")}
+                            </Link>
+                            }
+                        </View>
                         <View style={styles.linksRowRight}>
                             {!isAuthenticated && !isMobile &&
                                 (
@@ -68,28 +71,44 @@ const Navbar = () => {
                                         <TouchableOpacity
                                             onPress={() => setIsDropdownOpen(!isDropdownOpen)}>
                                             <View style={styles.imgUser}>
-                                                <Text style={{ color: styles.dropdownMenuItemText.color, fontSize: 28 }}>☰</Text>
+                                                <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>⚙</Text>
                                             </View>
                                         </TouchableOpacity>
 
                                         {isDropdownOpen && (
                                             <View style={styles.dropdownMenu}>
-                                                <TouchableOpacity style={styles.dropdownMenuItem}>
+                                                <TouchableOpacity
+                                                    style={styles.dropdownMenuItem}
+                                                    onPress={() => setIsDropdownOpen(false)}>
                                                     <Link href={"/"} style={styles.dropdownMenuItemText}>{i18n.t("home")}</Link>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={styles.dropdownMenuItem}>
+                                                <TouchableOpacity
+                                                    style={styles.dropdownMenuItem}
+                                                    onPress={() => setIsDropdownOpen(false)}>
+                                                    <Link href={"/video"} style={styles.dropdownMenuItemText}>{i18n.t("discover_videos")}</Link>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    style={styles.dropdownMenuItem}
+                                                    onPress={() => setIsDropdownOpen(false)}>
                                                     <Link href={"/myvideos"} style={styles.dropdownMenuItemText}>{i18n.t("myvideos")}</Link>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={styles.dropdownMenuItem}>
+                                                <TouchableOpacity
+                                                    style={styles.dropdownMenuItem}
+                                                    onPress={() => setIsDropdownOpen(false)}>
                                                     <Link href={"/upload"} style={styles.dropdownMenuItemText}>{i18n.t("upload")}</Link>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={styles.dropdownMenuItem}>
+                                                <View style={styles.dropdownDivider} />
+                                                <TouchableOpacity
+                                                    style={styles.dropdownMenuItem}
+                                                    onPress={() => setIsDropdownOpen(false)}>
                                                     <Link href={"/settings"} style={styles.dropdownMenuItemText}>
                                                         {i18n.t("settings")}
                                                     </Link>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={handleLogout} style={styles.dropdownMenuItem}>
-                                                    <Text style={styles.dropdownMenuItemText}>{i18n.t("logout")}</Text>
+                                                    <Text style={[styles.dropdownMenuItemText]}>
+                                                        {i18n.t("logout")}
+                                                    </Text>
                                                 </TouchableOpacity>
                                             </View>
                                         )}
@@ -114,38 +133,50 @@ const Navbar = () => {
                         <View style={styles.mobileMenu}>
                             {isAuthenticated ? (
                                 <>
-                                    <TouchableOpacity>
-                                        <Link href={"/video"} style={styles.mobileMenuText}>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
+                                        <Link href={"/"} style={styles.mobileMenuText}>
                                             {i18n.t("home")}
                                         </Link>
-                                        <TouchableOpacity>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
+                                        <Link href={"/video"} style={styles.mobileMenuText}>
+                                            {i18n.t("discover_videos")}
+                                        </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/myvideos"} style={styles.mobileMenuText}>
                                             {i18n.t("myvideos")}
                                         </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/upload"} style={styles.mobileMenuText}>
                                             {i18n.t("upload")}
                                         </Link>
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/settings"} style={styles.mobileMenuText}>
                                             {i18n.t("settings")}
                                         </Link>
                                     </TouchableOpacity>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={handleLogout}>
+                                    <TouchableOpacity onPress={handleLogout} style={styles.mobileMenuItem}>
                                         <Text style={styles.mobileMenuText}>{i18n.t("logout")}</Text>
                                     </TouchableOpacity>
                                 </>
                             ) : (
                                 <>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/login"} style={styles.mobileMenuText}>
                                             {i18n.t("login")}
                                         </Link>
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/register"} style={styles.mobileMenuText}>
                                             {i18n.t("register")}
+                                        </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
+                                        <Link href={"/settings"} style={styles.mobileMenuText}>
+                                            {i18n.t("settings")}
                                         </Link>
                                     </TouchableOpacity>
                                 </>
@@ -195,6 +226,8 @@ const useNavStyles = (colorScheme: string) => {
             position: "relative",
             zIndex: 9999,
             backgroundColor: palette.bg,
+            borderBottomWidth: 1,
+            borderBottomColor: palette.dropdownBorder,
         },
         safeArea: {
             width: "100%",
@@ -203,14 +236,20 @@ const useNavStyles = (colorScheme: string) => {
         navBarContainer: {
             flexDirection: "row",
             alignItems: "center",
-            margin: 20,
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            paddingVertical: 16,
             backgroundColor: palette.bg,
         },
+        brandSection: {
+            flexDirection: "row",
+            alignItems: "center",
+        },
         brandLink: {
-            fontSize: 18,
-            padding: 8,
+            fontSize: 22,
             fontWeight: "bold",
-            color: palette.fg,
+            color: palette.accent,
+            letterSpacing: 0.5,
         },
         linksRowRight: {
             flexDirection: "row",
@@ -237,18 +276,26 @@ const useNavStyles = (colorScheme: string) => {
             left: 0,
             width: "100%",
             backgroundColor: palette.menuBg,
-            padding: 16,
+            paddingVertical: 8,
+            paddingHorizontal: 16,
             shadowColor: palette.shadow,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.2,
             shadowRadius: 2,
             elevation: 2,
+            borderTopWidth: 1,
+            borderTopColor: palette.dropdownBorder,
+        },
+        mobileMenuItem: {
+            paddingVertical: 12,
+            paddingHorizontal: 8,
+            borderRadius: 8,
+            marginVertical: 2,
         },
         mobileMenuText: {
-            paddingVertical: 8,
             color: palette.menuText,
-            fontSize: 18,
-            fontWeight: "bold",
+            fontSize: 16,
+            fontWeight: "500",
         },
         dropdownContainer: {
             position: "relative",
@@ -259,27 +306,41 @@ const useNavStyles = (colorScheme: string) => {
         },
         dropdownMenu: {
             position: "absolute",
-            top: 50,
+            top: 60,
             right: 0,
             backgroundColor: palette.dropdownBg,
             borderWidth: 1,
             borderColor: palette.dropdownBorder,
-            borderRadius: 4,
+            borderRadius: 12,
             zIndex: 999,
+            minWidth: 180,
+            shadowColor: palette.shadow,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 5,
+            paddingVertical: 8,
         },
         dropdownMenuItem: {
-            paddingVertical: 8,
-            paddingHorizontal: 12,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
         },
         dropdownMenuItemText: {
-            fontSize: 16,
+            fontSize: 15,
             color: palette.fg,
+            fontWeight: "500",
+        },
+        dropdownDivider: {
+            height: 1,
+            backgroundColor: palette.dropdownBorder,
+            marginVertical: 8,
+            marginHorizontal: 12,
         },
         imgUser: {
-            width: 50,
-            height: 50,
-            backgroundColor: palette.userBg,
-            borderRadius: 50,
+            width: 44,
+            height: 44,
+            backgroundColor: palette.accent,
+            borderRadius: 22,
             overflow: 'hidden',
             alignItems: 'center',
             justifyContent: 'center',
