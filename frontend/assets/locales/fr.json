@@ -63,5 +63,10 @@
   "no_videos_uploaded": "Vous n'avez pas encore uploadé de vidéos ou d'images.",
   "loading": "Chargement...",
   "myvideos": "Mes Vidéos",
-  "does_not_have_account": "Vous n'avez pas de compte? Inscrivez-vous"
+  "does_not_have_account": "Vous n'avez pas de compte? Inscrivez-vous",
+  "discover_videos": "Découvrir",
+  "items_available": "contenus disponibles",
+  "explore_content": "Explorez du contenu incroyable",
+  "try_different_filters": "Essayez d'autres termes de recherche ou filtres",
+  "no_content_available": "Aucun contenu disponible pour le moment"
 }

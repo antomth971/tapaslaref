@@ -63,5 +63,10 @@
   "no_videos_uploaded": "You haven't uploaded any videos or images yet.",
   "loading": "Loading...",
   "myvideos": "My Videos",
-  "does_not_have_account": "Don't have an account? Sign up"
+  "does_not_have_account": "Don't have an account? Sign up",
+  "discover_videos": "Discover",
+  "items_available": "content available",
+  "explore_content": "Explore amazing content",
+  "try_different_filters": "Try different search terms or filters",
+  "no_content_available": "No content available yet"
 }
