@@ -1,7 +1,24 @@
-import { Controller, Get, HttpCode, HttpStatus, Query, Param, Post, Body, UseInterceptors, UploadedFile, BadRequestException, UseGuards, Request} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Query,
+  Param,
+  Post,
+  Body,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { VideoService } from './video.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService, ModerationType } from '../cloudinary/cloudinary.service';
+import {
+  CloudinaryService,
+  ModerationType,
+} from '../cloudinary/cloudinary.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { User } from '../database/entity/user.entity';
 @Controller('video')
@@ -9,13 +26,21 @@ export class VideoController {
   constructor(
     private readonly videoService: VideoService,
     private readonly cloudinaryService: CloudinaryService,
-  ) { }
+  ) {}
 
   @Get('all')
   async findAll(@Query('page') page = 1, @Query('limit') limit = 15) {
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
     return this.videoService.findPaginated(pageNumber, limitNumber);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Get('myvideos')
+  async findMyVideos(@Request() req) {
+    const userId = req.user.sub;
+    return this.videoService.findByUser(userId);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -32,25 +57,19 @@ export class VideoController {
     @UploadedFile() file: Express.Multer.File,
     @Body('description') description: string,
     @Body('transcription') transcription: string,
-    @Request() req
+    @Request() req,
   ) {
     if (!file) {
       throw new BadRequestException('No file provided');
     }
-
-    console.log('=== Upload Started ===');
-    console.log('File:', file.originalname, file.mimetype, file.size);
-    console.log('Description:', description);
-    console.log('Transcription:', transcription);
-
     try {
-      // 1. Upload vers Cloudinary avec modération
-      const resourceType = file.mimetype.startsWith('image/') ? 'image' : 'video';
-      const moderationType = resourceType === 'video'
-        ? ModerationType.AWS_REKOGNITION_VIDEO
-        : ModerationType.AWS_REKOGNITION;
-
-      console.log('Uploading to Cloudinary with moderation:', moderationType);
+      const resourceType = file.mimetype.startsWith('image/')
+        ? 'image'
+        : 'video';
+      const moderationType =
+        resourceType === 'video'
+          ? ModerationType.AWS_REKOGNITION_VIDEO
+          : ModerationType.AWS_REKOGNITION;
 
       const uploadResult = await this.cloudinaryService.uploadAsset(
         file.buffer,
@@ -61,17 +80,12 @@ export class VideoController {
           tags: ['user_upload'],
           filename: file.originalname,
           mimetype: file.mimetype,
-        }
+        },
       );
-
-      console.log('Upload successful:', uploadResult.public_id);
-      console.log('Moderation status:', uploadResult.moderation);
 
       let moderationStatus = uploadResult.moderation?.[0]?.status || 'pending';
 
       if (moderationStatus === 'pending') {
-        console.log('⏳ Moderation PENDING - Waiting for validation...');
-
         try {
           moderationStatus = await this.waitForModerationResult(
             uploadResult.public_id,
@@ -79,9 +93,8 @@ export class VideoController {
             60000,
             2000,
           );
-          console.log('✅ Moderation completed with status:', moderationStatus);
         } catch (error) {
-          console.log('⚠️ Moderation timeout - Deleting asset');
+          console.error('⚠️ Moderation timeout - Deleting asset');
 
           await this.cloudinaryService.deleteAsset(
             uploadResult.public_id,
@@ -89,14 +102,12 @@ export class VideoController {
           );
 
           throw new BadRequestException(
-            'Moderation timeout: The content validation took too long. Please try again.'
+            'Moderation timeout: The content validation took too long. Please try again.',
           );
         }
       }
 
       if (moderationStatus === 'approved') {
-        console.log('✅ Moderation APPROVED - Saving to database');
-
         const user = new User();
         user.id = req.user.sub;
 
@@ -104,7 +115,7 @@ export class VideoController {
           uploadResult,
           description,
           transcription,
-          user
+          user,
         );
 
         return {
@@ -113,17 +124,16 @@ export class VideoController {
           video: savedVideo,
         };
       } else if (moderationStatus === 'rejected') {
-
         await this.cloudinaryService.deleteAsset(
           uploadResult.public_id,
           resourceType,
         );
 
         throw new BadRequestException(
-          'Content moderation failed: The uploaded content does not meet our community guidelines'
+          'Content moderation failed: The uploaded content does not meet our community guidelines',
         );
       } else {
-        console.log('⚠️ Unknown moderation status - Deleting asset');
+        console.error('⚠️ Unknown moderation status - Deleting asset');
 
         await this.cloudinaryService.deleteAsset(
           uploadResult.public_id,
@@ -131,14 +141,12 @@ export class VideoController {
         );
 
         throw new BadRequestException(
-          'Moderation error: Unknown status received'
+          'Moderation error: Unknown status received',
         );
       }
     } catch (error) {
       console.error('Upload error:', error);
-      throw new BadRequestException(
-        error.message || 'Failed to upload video'
-      );
+      throw new BadRequestException(error.message || 'Failed to upload video');
     }
   }
 
@@ -160,7 +168,7 @@ export class VideoController {
     const startTime = Date.now();
 
     while (Date.now() - startTime < maxWaitTime) {
-      await new Promise(resolve => setTimeout(resolve, pollingInterval));
+      await new Promise((resolve) => setTimeout(resolve, pollingInterval));
 
       try {
         const assetDetails = await this.cloudinaryService.getAssetDetails(
@@ -170,12 +178,16 @@ export class VideoController {
 
         const moderationStatus = assetDetails.moderation?.[0]?.status;
 
-        console.log(`Polling moderation status: ${moderationStatus} (${Math.round((Date.now() - startTime) / 1000)}s elapsed)`);
+        console.log(
+          `Polling moderation status: ${moderationStatus} (${Math.round((Date.now() - startTime) / 1000)}s elapsed)`,
+        );
 
-        if (moderationStatus === 'approved' || moderationStatus === 'rejected') {
+        if (
+          moderationStatus === 'approved' ||
+          moderationStatus === 'rejected'
+        ) {
           return moderationStatus;
         }
-
       } catch (error) {
         console.error('Error polling moderation status:', error.message);
       }

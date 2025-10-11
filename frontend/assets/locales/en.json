@@ -57,5 +57,11 @@
   "select_at_least_one_file": "Select at least one file.",
   "success": "Success",
   "upload_finished": "Upload complete ✅",
-  "upload_failed": "Upload failed."
+  "upload_failed": "Upload failed.",
+  "my_videos_title": "My Videos",
+  "items_count": "item(s)",
+  "no_videos_uploaded": "You haven't uploaded any videos or images yet.",
+  "loading": "Loading...",
+  "myvideos": "My Videos",
+  "does_not_have_account": "Don't have an account? Sign up"
 }

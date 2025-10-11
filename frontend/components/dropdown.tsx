@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform, ScrollView, Modal, Pressable } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal, Pressable } from "react-native";
 import { DropdownProps } from "@/type/feature/dropdown";
 
 const Dropdown: React.FC<DropdownProps> = ({

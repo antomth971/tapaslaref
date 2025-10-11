@@ -58,13 +58,13 @@ export default function VideoUploadScreen() {
       });
     } catch (e) {
       console.error(e);
-      Alert.alert(i18n.t('error'), i18n.t('error_picker_open'));
+      console.error(i18n.t('error'), i18n.t('error_picker_open'));
     }
   };
 
   const onUpload = async (): Promise<void> => {
     if (!assets.length) {
-      Alert.alert(i18n.t('info'), i18n.t('select_at_least_one_file'));
+      console.error(i18n.t('info'), i18n.t('select_at_least_one_file'));
       return;
     }
     setUploading(true);
@@ -82,11 +82,11 @@ export default function VideoUploadScreen() {
           }
         }
       );
-      Alert.alert(i18n.t('success'), i18n.t('upload_finished'));
+      console.error(i18n.t('success'), i18n.t('upload_finished'));
       // setAssets([]);
     } catch (e) {
       console.error(e);
-      Alert.alert(i18n.t('error'), i18n.t('upload_failed'));
+      console.error(i18n.t('error'), i18n.t('upload_failed'));
     } finally {
       setUploading(false);
       setValidating(false);

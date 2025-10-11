@@ -9,9 +9,6 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
   providers: [VideoService],
   controllers: [VideoController],
   exports: [TypeOrmModule],
-  imports: [
-    TypeOrmModule.forFeature([Video]),
-    CloudinaryModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Video]), CloudinaryModule],
 })
 export class VideoModule {}

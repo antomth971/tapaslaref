@@ -80,7 +80,7 @@ export default function Login() {
                 <Text style={styles.buttonText}>{i18n.t("login")}</Text>
             </TouchableOpacity>
             <Link href="/register">
-                <Text style={styles.linkText}>{i18n.t("already_have_account")}</Text>
+                <Text style={styles.linkText}>{i18n.t("does_not_have_account")}</Text>
             </Link>
         </View>
     );

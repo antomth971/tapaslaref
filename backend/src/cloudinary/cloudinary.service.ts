@@ -287,14 +287,11 @@ export class CloudinaryService {
     const signature = this.generateSignature(params);
 
     try {
-      const response = await axios.post(
-        `${this.uploadUrl}/image/explicit`,
-        {
-          ...params,
-          api_key: this.apiKey,
-          signature,
-        },
-      );
+      const response = await axios.post(`${this.uploadUrl}/image/explicit`, {
+        ...params,
+        api_key: this.apiKey,
+        signature,
+      });
 
       return response.data;
     } catch (error) {

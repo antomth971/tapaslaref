@@ -286,7 +286,12 @@ describe('VideoService', () => {
         user: mockUser,
       } as Video);
 
-      const result = await service.saveUploadedVideo(cloudinaryData, '', '', mockUser);
+      const result = await service.saveUploadedVideo(
+        cloudinaryData,
+        '',
+        '',
+        mockUser,
+      );
 
       expect(result.title).toBe('Untitled');
       expect(result.format).toBe('video');

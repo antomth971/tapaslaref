@@ -8,7 +8,7 @@ export class VideoService {
   constructor(
     @InjectRepository(Video)
     private videosRepository: Repository<Video>,
-  ) { }
+  ) {}
 
   findAll(): Promise<Video[]> {
     return this.videosRepository.find();
@@ -70,7 +70,7 @@ export class VideoService {
     cloudinaryData: any,
     description: string,
     transcription: string,
-    user: User
+    user: User,
   ): Promise<Video> {
     const video = new Video();
     video.title = cloudinaryData.original_filename || 'Untitled';
@@ -83,5 +83,12 @@ export class VideoService {
     video.transcription = transcription || '';
     video.user = user;
     return this.videosRepository.save(video);
+  }
+
+  async findByUser(userId: string): Promise<Video[]> {
+    return this.videosRepository.find({
+      where: { user: { id: userId } },
+      order: { score: 'DESC' },
+    });
   }
 }
