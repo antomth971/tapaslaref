@@ -1,13 +1,10 @@
 import { AppDataSource } from '../../data-source';
-import { Seeder, SeederFactoryManager } from 'typeorm-extension';
+import { Seeder } from 'typeorm-extension';
 import { hash } from 'bcrypt';
 export class User1750333720175 implements Seeder {
   track = false;
 
-  public async run(
-    dataSource: typeof AppDataSource,
-    factoryManager: SeederFactoryManager,
-  ): Promise<any> {
+  public async run(dataSource: typeof AppDataSource): Promise<any> {
     console.log('Seeding User...');
     const UserRepository = dataSource.getRepository('User');
     await UserRepository.insert([

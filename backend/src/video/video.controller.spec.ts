@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VideoController } from './video.controller';
 import { VideoService } from './video.service';
-import { CloudinaryService, ModerationType } from '../cloudinary/cloudinary.service';
+import {
+  CloudinaryService,
+  ModerationType,
+} from '../cloudinary/cloudinary.service';
 import { BadRequestException } from '@nestjs/common';
 
 describe('VideoController', () => {
@@ -197,7 +200,12 @@ describe('VideoController', () => {
       mockCloudinaryService.deleteAsset.mockResolvedValue({ result: 'ok' });
 
       await expect(
-        controller.upload(mockFile, 'description', 'transcription', mockRequest),
+        controller.upload(
+          mockFile,
+          'description',
+          'transcription',
+          mockRequest,
+        ),
       ).rejects.toThrow(BadRequestException);
 
       expect(mockCloudinaryService.deleteAsset).toHaveBeenCalledWith(
@@ -234,7 +242,12 @@ describe('VideoController', () => {
       mockCloudinaryService.getAssetDetails.mockResolvedValue(approvedDetails);
       mockVideoService.saveUploadedVideo.mockResolvedValue(savedVideo);
 
-      const uploadPromise = controller.upload(mockFile, 'desc', 'trans', mockRequest);
+      const uploadPromise = controller.upload(
+        mockFile,
+        'desc',
+        'trans',
+        mockRequest,
+      );
 
       // Advance timers to trigger the polling
       await jest.advanceTimersByTimeAsync(3000);
@@ -269,7 +282,12 @@ describe('VideoController', () => {
       mockCloudinaryService.getAssetDetails.mockResolvedValue(rejectedDetails);
       mockCloudinaryService.deleteAsset.mockResolvedValue({ result: 'ok' });
 
-      const uploadPromise = controller.upload(mockFile, 'desc', 'trans', mockRequest);
+      const uploadPromise = controller.upload(
+        mockFile,
+        'desc',
+        'trans',
+        mockRequest,
+      );
 
       // Advance timers to trigger the polling
       await jest.advanceTimersByTimeAsync(3000);
@@ -304,7 +322,12 @@ describe('VideoController', () => {
       mockCloudinaryService.getAssetDetails.mockResolvedValue(pendingDetails);
       mockCloudinaryService.deleteAsset.mockResolvedValue({ result: 'ok' });
 
-      const uploadPromise = controller.upload(mockFile, 'desc', 'trans', mockRequest);
+      const uploadPromise = controller.upload(
+        mockFile,
+        'desc',
+        'trans',
+        mockRequest,
+      );
 
       // Fast-forward time to trigger timeout (more than 60s)
       await jest.advanceTimersByTimeAsync(65000);
@@ -335,7 +358,12 @@ describe('VideoController', () => {
       mockCloudinaryService.uploadAsset.mockResolvedValue(uploadResult);
       mockVideoService.saveUploadedVideo.mockResolvedValue(savedVideo);
 
-      const result = await controller.upload(mockImageFile, 'Image desc', '', mockRequest);
+      const result = await controller.upload(
+        mockImageFile,
+        'Image desc',
+        '',
+        mockRequest,
+      );
 
       expect(result).toEqual({
         success: true,
@@ -422,7 +450,12 @@ describe('VideoController', () => {
       mockCloudinaryService.getAssetDetails.mockResolvedValue(approvedDetails);
       mockVideoService.saveUploadedVideo.mockResolvedValue(savedVideo);
 
-      const uploadPromise = controller.upload(mockFile, 'polling test', '', mockRequest);
+      const uploadPromise = controller.upload(
+        mockFile,
+        'polling test',
+        '',
+        mockRequest,
+      );
 
       // Advance timers to allow polling to occur
       await jest.advanceTimersByTimeAsync(3000);
@@ -472,11 +505,16 @@ describe('VideoController', () => {
         .mockResolvedValueOnce(approvedDetails);
       mockVideoService.saveUploadedVideo.mockResolvedValue(savedVideo);
 
-      const uploadPromise = controller.upload(mockFile, 'error test', '', mockRequest);
+      const uploadPromise = controller.upload(
+        mockFile,
+        'error test',
+        '',
+        mockRequest,
+      );
 
       // Advance timers to allow first polling attempt (which will fail)
       await jest.advanceTimersByTimeAsync(3000);
-      
+
       // Advance timers again to allow second polling attempt (which will succeed)
       await jest.advanceTimersByTimeAsync(3000);
 
