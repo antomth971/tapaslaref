@@ -48,6 +48,12 @@ export default function VideoGridScreen() {
     setModalVisible(false);
     setSelectedVideo(null);
   };
+    const resetAndLoad = () => {
+    setMediaList([]);
+    setPage(1);
+    setHasMore(true);
+    fetchPage(1, true);
+  };
 
   useEffect(() => {
     resetAndLoad();
@@ -63,14 +69,7 @@ export default function VideoGridScreen() {
         setModalVisible(true);
       }
     }
-  }, [params, mediaList]);
-
-  const resetAndLoad = () => {
-    setMediaList([]);
-    setPage(1);
-    setHasMore(true);
-    fetchPage(1, true);
-  };
+  }, [params, mediaList, selectedVideo, resetAndLoad]);
 
   const fetchPage = async (pageToFetch: number, overwrite = false) => {
     if (isLoading || (!hasMore && !overwrite)) return;
@@ -158,6 +157,7 @@ export default function VideoGridScreen() {
           visible={modalVisible}
           onClose={closeModal}
           videoId={selectedVideo.id}
+          uri={selectedVideo.link}
           title={selectedVideo.title}
           description={selectedVideo.description}
           transcription={selectedVideo.transcription}

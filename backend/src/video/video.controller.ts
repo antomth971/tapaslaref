@@ -19,6 +19,14 @@ export class VideoController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Get('myvideos')
+  async findMyVideos(@Request() req) {
+    const userId = req.user.sub;
+    return this.videoService.findByUser(userId);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.videoService.findOne(id);
@@ -37,20 +45,11 @@ export class VideoController {
     if (!file) {
       throw new BadRequestException('No file provided');
     }
-
-    console.log('=== Upload Started ===');
-    console.log('File:', file.originalname, file.mimetype, file.size);
-    console.log('Description:', description);
-    console.log('Transcription:', transcription);
-
     try {
-      // 1. Upload vers Cloudinary avec modération
       const resourceType = file.mimetype.startsWith('image/') ? 'image' : 'video';
       const moderationType = resourceType === 'video'
         ? ModerationType.AWS_REKOGNITION_VIDEO
         : ModerationType.AWS_REKOGNITION;
-
-      console.log('Uploading to Cloudinary with moderation:', moderationType);
 
       const uploadResult = await this.cloudinaryService.uploadAsset(
         file.buffer,
@@ -64,13 +63,9 @@ export class VideoController {
         }
       );
 
-      console.log('Upload successful:', uploadResult.public_id);
-      console.log('Moderation status:', uploadResult.moderation);
-
       let moderationStatus = uploadResult.moderation?.[0]?.status || 'pending';
 
       if (moderationStatus === 'pending') {
-        console.log('⏳ Moderation PENDING - Waiting for validation...');
 
         try {
           moderationStatus = await this.waitForModerationResult(
@@ -79,9 +74,8 @@ export class VideoController {
             60000,
             2000,
           );
-          console.log('✅ Moderation completed with status:', moderationStatus);
         } catch (error) {
-          console.log('⚠️ Moderation timeout - Deleting asset');
+          console.error('⚠️ Moderation timeout - Deleting asset');
 
           await this.cloudinaryService.deleteAsset(
             uploadResult.public_id,
@@ -95,7 +89,6 @@ export class VideoController {
       }
 
       if (moderationStatus === 'approved') {
-        console.log('✅ Moderation APPROVED - Saving to database');
 
         const user = new User();
         user.id = req.user.sub;
@@ -123,7 +116,7 @@ export class VideoController {
           'Content moderation failed: The uploaded content does not meet our community guidelines'
         );
       } else {
-        console.log('⚠️ Unknown moderation status - Deleting asset');
+        console.error('⚠️ Unknown moderation status - Deleting asset');
 
         await this.cloudinaryService.deleteAsset(
           uploadResult.public_id,

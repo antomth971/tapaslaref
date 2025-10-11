@@ -1,16 +1,88 @@
-import React, { useMemo } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import Props from '@/type/feature/video/modal';
 import Video from './video';
 import { useLanguage } from '@/hooks/providers/LangageProvider';
 import { useCommonStyles } from '@/constants/style';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
-export default function VideoModal({ visible, onClose, videoId, title, description, transcription, format }: Props) {
+export default function VideoModal({ visible, onClose, videoId, uri, title, description, transcription, format }: Props) {
   const { i18n } = useLanguage();
   const { palette } = useCommonStyles();
   const styles = useMemo(() => makeStyles(palette), [palette]);
-  console.log(transcription);
-  
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleShare = async () => {
+    if (!uri) {
+      console.error(i18n.t('error'), 'No content to share');
+      return;
+    }
+
+    try {
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (!isAvailable && Platform.OS !== 'web') {
+        console.error(i18n.t('error'), 'Sharing is not available on this platform');
+        return;
+      }
+      console.log('Sharing content:', { uri, title, format });
+      
+      if (Platform.OS === 'web') {
+        if (navigator.clipboard) {
+          console.log('Copying link to clipboard');
+          await navigator.clipboard.writeText(uri);
+          console.error(i18n.t('success'), 'Link copied to clipboard');
+        } else {
+          console.error(i18n.t('error'), 'Unable to copy link');
+        }        
+      } else {
+        const fileExtension = format === 'video' ? 'mp4' : 'jpg';
+        const fileName = `${title || 'media'}.${fileExtension}`;
+        const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
+
+        const downloadResult = await FileSystem.downloadAsync(uri, fileUri);
+        await Sharing.shareAsync(downloadResult.uri);
+      }
+    } catch (error) {
+      console.error('Share error:', error);
+      console.error(i18n.t('error'), 'Failed to share content');
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!uri) {
+      console.error(i18n.t('error'), 'No content to download');
+      return;
+    }
+
+    if (Platform.OS === 'web') {
+      window.open(uri, '_blank');
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+      const fileExtension = format === 'video' ? 'mp4' : 'jpg';
+      const fileName = `${title || 'media'}_${Date.now()}.${fileExtension}`;
+      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+
+      const downloadResult = await FileSystem.downloadAsync(uri, fileUri);
+
+      console.error(
+        i18n.t('success'),
+        `${format === 'video' ? 'Video' : 'Image'} downloaded successfully!`,
+        [{ text: 'OK' }]
+      );
+
+      console.log('Downloaded to:', downloadResult.uri);
+    } catch (error) {
+      console.error('Download error:', error);
+      console.error(i18n.t('error'), 'Failed to download content');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -37,6 +109,27 @@ export default function VideoModal({ visible, onClose, videoId, title, descripti
               </View>
             ) : null}
           </ScrollView>
+
+          <View style={styles.actionButtons}>
+            <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
+              <Text style={styles.actionButtonIcon}>🔗</Text>
+              <Text style={styles.actionButtonText}>Share</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleDownload}
+              style={[styles.actionButton, isDownloading && styles.actionButtonDisabled]}
+              disabled={isDownloading}
+            >
+              <Text style={styles.actionButtonIcon}>
+                {isDownloading ? '⏳' : '⬇️'}
+              </Text>
+              <Text style={styles.actionButtonText}>
+                {isDownloading ? 'Downloading...' : 'Download'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity onPress={onClose} style={styles.button}>
             <Text style={styles.buttonText}>{i18n.t('close')}</Text>
           </TouchableOpacity>
@@ -92,6 +185,36 @@ const makeStyles = (palette: ReturnType<typeof useCommonStyles>["palette"]) =>
       color: palette.secondaryText,
       fontStyle: 'italic',
       lineHeight: 19,
+    },
+    actionButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginTop: 16,
+      paddingTop: 16,
+      borderTopWidth: 1,
+      borderTopColor: palette.inputBorder,
+    },
+    actionButton: {
+      alignItems: 'center',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      backgroundColor: palette.inputBackground,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: palette.inputBorder,
+      minWidth: 120,
+    },
+    actionButtonDisabled: {
+      opacity: 0.5,
+    },
+    actionButtonIcon: {
+      fontSize: 24,
+      marginBottom: 4,
+    },
+    actionButtonText: {
+      fontSize: 12,
+      color: palette.text,
+      fontWeight: '600',
     },
     button: {
       marginTop: 20,

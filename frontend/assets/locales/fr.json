@@ -57,5 +57,11 @@
   "select_at_least_one_file": "Sélectionne au moins un fichier.",
   "success": "Succès",
   "upload_finished": "Upload terminé ✅",
-  "upload_failed": "L'upload a échoué."
+  "upload_failed": "L'upload a échoué.",
+  "my_videos_title": "Mes Vidéos",
+  "items_count": "élément(s)",
+  "no_videos_uploaded": "Vous n'avez pas encore uploadé de vidéos ou d'images.",
+  "loading": "Chargement...",
+  "myvideos": "Mes Vidéos",
+  "does_not_have_account": "Vous n'avez pas de compte? Inscrivez-vous"
 }

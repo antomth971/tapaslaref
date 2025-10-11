@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useLanguage } from '@/hooks/providers/LangageProvider'; 
 import Dropdown from '../dropdown';
 export default function LanguageSwitcher() {

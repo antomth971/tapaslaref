@@ -42,6 +42,17 @@ export async function getVideoById(id: string) {
   }
 }
 
+export async function getMyVideos() {
+  const config = await getConfig();
+  try {
+    const response = await axios.get(`${API_URL}/video/myvideos`, config);
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors du chargement de mes vidéos', error);
+    throw error;
+  }
+}
+
 export async function uploadAssetsWeb(
   info: { description: string; transcription: string },
   assets: PickerAsset[],

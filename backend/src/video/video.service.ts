@@ -84,4 +84,11 @@ export class VideoService {
     video.user = user;
     return this.videosRepository.save(video);
   }
+
+  async findByUser(userId: string): Promise<Video[]> {
+    return this.videosRepository.find({
+      where: { user: { id: userId } },
+      order: { score: 'DESC' }
+    });
+  }
 }
