@@ -1,0 +1,69 @@
+name: Deploy to Hetzner VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh $SERVER_USER@$SERVER_IP << 'ENDSSH'
+            cd /opt/tapaslaref
+
+            # Pull les dernières modifications
+            git pull origin main
+
+            # Copier le fichier .env si nécessaire
+            if [ ! -f .env ]; then
+              echo "Erreur: Le fichier .env n'existe pas!"
+              exit 1
+            fi
+
+            # Rebuild et redémarrer les conteneurs
+            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml build --no-cache
+            docker-compose -f docker-compose.prod.yml up -d
+
+            # Nettoyer les anciennes images
+            docker system prune -af
+
+            echo "Déploiement terminé avec succès!"
+          ENDSSH
+
+      - name: Health check
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          sleep 30
+          curl --retry 5 --retry-delay 5 --retry-max-time 60 http://$SERVER_IP/api/health || echo "Health check failed"
+
+      - name: Notify on success
+        if: success()
+        run: echo "Deployment successful!"
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "Deployment failed!"
