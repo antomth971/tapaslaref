@@ -12,6 +12,9 @@ RUN npm ci
 # Copier le code source
 COPY . .
 
+# Utiliser le fichier .env.production pour le build
+ENV NODE_ENV=production
+
 # Build l'application pour le web
 RUN npx expo export --platform web
 
