@@ -13,11 +13,11 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '127.0.0.1',
-      port: 5432,
-      username: 'admin',
-      password: 'admin',
-      database: 'app',
+      host: process.env.DATABASE_HOST || 'localhost',
+      port: parseInt(process.env.DATABASE_PORT || '5432'),
+      username: process.env.DATABASE_USER || 'admin',
+      password: process.env.DATABASE_PASSWORD || 'admin',
+      database: process.env.DATABASE_NAME || 'app',
       entities: [Video, User],
       synchronize: true,
     }),
