@@ -15,10 +15,14 @@ const API_URL=process.env.EXPO_PUBLIC_API_URL as string
         }
     }
 
-    const registerUser = async (email: string, password: string): Promise<ReturnWithBoolean> => {
+    const registerUser = async (email: string, password: string, recaptchaToken?: string): Promise<ReturnWithBoolean> => {
         try {
             const config = await getConfig();
-            const response = await axios.post(`${API_URL}/auth/register`, { email, password }, config);
+            const response = await axios.post(`${API_URL}/auth/register`, {
+                email,
+                password,
+                recaptchaToken
+            }, config);
             return response.data;
         } catch (error) {
             console.error("Registration error:", error);
