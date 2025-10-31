@@ -86,8 +86,16 @@ export default function VideoGridScreen() {
         if (filter === 'videos' && !isVideo) return false;
         if (filter === 'images' && !isImage) return false;
         if (filter === 'all' && !(isVideo || isImage)) return false;
-        if (searchQuery && !m.link.toLowerCase().includes(searchQuery.toLowerCase()))
-          return false;
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          const matchesTitle = m.title?.toLowerCase().includes(query);
+          const matchesDescription = m.description?.toLowerCase().includes(query);
+          const matchesTranscription = m.transcription?.toLowerCase().includes(query);
+          const matchesLink = m.link?.toLowerCase().includes(query);
+          if (!matchesTitle && !matchesDescription && !matchesTranscription && !matchesLink) {
+            return false;
+          }
+        }
         return true;
       });
 
