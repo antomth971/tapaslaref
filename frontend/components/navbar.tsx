@@ -165,6 +165,11 @@ const Navbar = () => {
                             ) : (
                                 <>
                                     <TouchableOpacity style={styles.mobileMenuItem}>
+                                        <Link href={"/video"} style={styles.mobileMenuText}>
+                                            {i18n.t("discover_videos")}
+                                        </Link>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.mobileMenuItem}>
                                         <Link href={"/login"} style={styles.mobileMenuText}>
                                             {i18n.t("login")}
                                         </Link>

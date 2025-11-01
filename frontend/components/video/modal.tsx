@@ -56,7 +56,36 @@ export default function VideoModal({ visible, onClose, videoId, uri, title, desc
     }
 
     if (Platform.OS === 'web') {
-      window.open(uri, '_blank');
+      try {
+        setIsDownloading(true);
+        const fileExtension = format === 'video' ? 'mp4' : 'jpg';
+        const fileName = `${title || 'media'}_${Date.now()}.${fileExtension}`;
+
+        // Fetch the file as a blob
+        const response = await fetch(uri);
+        const blob = await response.blob();
+
+        // Create a temporary URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        // Create a temporary anchor element
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+
+        // Append to the document, click it, and remove it
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Clean up the blob URL
+        window.URL.revokeObjectURL(blobUrl);
+      } catch (error) {
+        console.error('Download error:', error);
+        console.error(i18n.t('error'), 'Failed to download content');
+      } finally {
+        setIsDownloading(false);
+      }
       return;
     }
 
